@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1d1318">
+<title>HHT Audit Inventory | CP AXTRA - Makro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --bg:#0f0a0d;
+  --bg-soft:#170f13;
+  --surface:#1d1318;
+  --surface-2:#271a20;
+  --surface-3:#33212a;
+  --border:#3d2730;
+  --text:#f3ece9;
+  --text-dim:#bda5ab;
+  --text-faint:#7d6168;
+  --accent:#c89b3c;
+  --accent-strong:#e3bb5a;
+  --accent-dim:rgba(200,155,60,.14);
+  --brand:#8b1538;
+  --brand-strong:#a91e44;
+  --brand-dim:rgba(139,21,56,.16);
+  --ok:#3fb37f;
+  --ok-dim:rgba(63,179,127,.14);
+  --bad:#e0445c;
+  --bad-dim:rgba(224,68,92,.15);
+  --pending:#d4a53d;
+  --pending-dim:rgba(212,165,61,.12);
+  --radius-lg:16px;
+  --radius:12px;
+  --radius-sm:8px;
+  --font:'IBM Plex Sans Thai','IBM Plex Sans',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono','IBM Plex Sans Thai',monospace;
+  --shadow:0 8px 30px rgba(0,0,0,.45);
+  --sidebar-w:264px;
+  --topbar-h:64px;
+}
+[data-theme="light"],
+[data-theme="arctic"]{
+  --bg:#f5f1ec;
+  --bg-soft:#efe9e2;
+  --surface:#ffffff;
+  --surface-2:#faf6f1;
+  --surface-3:#f0e9e1;
+  --border:#e2d8cc;
+  --text:#2a1c20;
+  --text-dim:#6b5359;
+  --text-faint:#a08a8f;
+  --accent:#a87c1f;
+  --accent-strong:#8c6818;
+  --accent-dim:rgba(168,124,31,.10);
+  --brand:#8b1538;
+  --brand-strong:#6e0f2c;
+  --brand-dim:rgba(139,21,56,.08);
+  --ok:#1c8a5c;
+  --ok-dim:rgba(28,138,92,.10);
+  --bad:#c5293f;
+  --bad-dim:rgba(197,41,63,.09);
+  --pending:#a87c1f;
+  --pending-dim:rgba(168,124,31,.08);
+  --shadow:0 8px 24px rgba(60,30,40,.10);
+}
+
+/* ============================================================
+   THEME PRESETS (ตั้งค่า > ธีมสี)
+   ============================================================ */
+[data-theme="midnight"]{
+  --bg:#0a0e1a; --bg-soft:#0e1422; --surface:#141b2e; --surface-2:#1b2438; --surface-3:#243049;
+  --border:#2c3954; --text:#eef1f8; --text-dim:#9aa5c0; --text-faint:#65719c;
+  --accent:#3a4a7a; --accent-strong:#4d5f96; --accent-dim:rgba(58,74,122,.18);
+  --brand:#e0263f; --brand-strong:#ff3b54; --brand-dim:rgba(224,38,63,.16);
+  --ok:#3fb37f; --ok-dim:rgba(63,179,127,.14); --bad:#e0445c; --bad-dim:rgba(224,68,92,.15);
+  --pending:#d4a53d; --pending-dim:rgba(212,165,61,.12);
+  --shadow:0 8px 30px rgba(0,0,0,.5);
+}
+[data-theme="obsidian"]{
+  --bg:#0d0d0e; --bg-soft:#141415; --surface:#1a1a1c; --surface-2:#222224; --surface-3:#2c2c2f;
+  --border:#38383c; --text:#f2f2f3; --text-dim:#a3a3a8; --text-faint:#6e6e74;
+  --accent:#3a3a3e; --accent-strong:#4e4e54; --accent-dim:rgba(58,58,62,.25);
+  --brand:#e0263f; --brand-strong:#ff3b54; --brand-dim:rgba(224,38,63,.16);
+  --ok:#3fb37f; --ok-dim:rgba(63,179,127,.14); --bad:#e0445c; --bad-dim:rgba(224,68,92,.15);
+  --pending:#d4a53d; --pending-dim:rgba(212,165,61,.12);
+  --shadow:0 8px 30px rgba(0,0,0,.55);
+}
+[data-theme="forest"]{
+  --bg:#0c1410; --bg-soft:#101b15; --surface:#16241c; --surface-2:#1d2f24; --surface-3:#263d30;
+  --border:#2f4c3b; --text:#eef5f0; --text-dim:#9fc1ab; --text-faint:#6a8c77;
+  --accent:#1e8f5a; --accent-strong:#27b370; --accent-dim:rgba(30,143,90,.16);
+  --brand:#1e8f5a; --brand-strong:#27b370; --brand-dim:rgba(30,143,90,.16);
+  --ok:#3fb37f; --ok-dim:rgba(63,179,127,.14); --bad:#e0445c; --bad-dim:rgba(224,68,92,.15);
+  --pending:#d4a53d; --pending-dim:rgba(212,165,61,.12);
+  --shadow:0 8px 30px rgba(0,0,0,.45);
+}
+[data-theme="royal"]{
+  --bg:#100b1c; --bg-soft:#160f26; --surface:#1d1433; --surface-2:#261b42; --surface-3:#322355;
+  --border:#3e2c66; --text:#f1edf9; --text-dim:#b3a3d4; --text-faint:#7d6ca3;
+  --accent:#7c4dd9; --accent-strong:#9468f0; --accent-dim:rgba(124,77,217,.18);
+  --brand:#7c4dd9; --brand-strong:#9468f0; --brand-dim:rgba(124,77,217,.18);
+  --ok:#3fb37f; --ok-dim:rgba(63,179,127,.14); --bad:#e0445c; --bad-dim:rgba(224,68,92,.15);
+  --pending:#d4a53d; --pending-dim:rgba(212,165,61,.12);
+  --shadow:0 8px 30px rgba(0,0,0,.5);
+}
+[data-theme="sunset"]{
+  --bg:#180f0a; --bg-soft:#21140d; --surface:#2b1b12; --surface-2:#382418; --surface-3:#48301f;
+  --border:#5a3c26; --text:#fbeee3; --text-dim:#dba883; --text-faint:#a67654;
+  --accent:#e8632c; --accent-strong:#ff7d42; --accent-dim:rgba(232,99,44,.18);
+  --brand:#e8632c; --brand-strong:#ff7d42; --brand-dim:rgba(232,99,44,.18);
+  --ok:#3fb37f; --ok-dim:rgba(63,179,127,.14); --bad:#e0445c; --bad-dim:rgba(224,68,92,.15);
+  --pending:#d4a53d; --pending-dim:rgba(212,165,61,.12);
+  --shadow:0 8px 30px rgba(0,0,0,.45);
+}
+[data-theme="ocean"]{
+  --bg:#081016; --bg-soft:#0c161e; --surface:#101f29; --surface-2:#152937; --surface-3:#1c3647;
+  --border:#234458; --text:#e9f3f8; --text-dim:#9bc1d4; --text-faint:#6790a4;
+  --accent:#27b3a8; --accent-strong:#33d4c6; --accent-dim:rgba(39,179,168,.16);
+  --brand:#2f7de0; --brand-strong:#4393ff; --brand-dim:rgba(47,125,224,.16);
+  --ok:#3fb37f; --ok-dim:rgba(63,179,127,.14); --bad:#e0445c; --bad-dim:rgba(224,68,92,.15);
+  --pending:#d4a53d; --pending-dim:rgba(212,165,61,.12);
+  --shadow:0 8px 30px rgba(0,0,0,.45);
+}
+[data-theme="slate"]{
+  --bg:#0e1116; --bg-soft:#13171d; --surface:#1a1f27; --surface-2:#222833; --surface-3:#2c3340;
+  --border:#384151; --text:#eef1f6; --text-dim:#a1aabb; --text-faint:#6c7689;
+  --accent:#2f6fe0; --accent-strong:#4d87f5; --accent-dim:rgba(47,111,224,.16);
+  --brand:#2f6fe0; --brand-strong:#4d87f5; --brand-dim:rgba(47,111,224,.16);
+  --ok:#3fb37f; --ok-dim:rgba(63,179,127,.14); --bad:#e0445c; --bad-dim:rgba(224,68,92,.15);
+  --pending:#d4a53d; --pending-dim:rgba(212,165,61,.12);
+  --shadow:0 8px 30px rgba(0,0,0,.45);
+}
+/* "custom" theme: base palette comes from dark defaults, --bg/--surface overridden inline via JS */
+[data-theme="custom"]{
+  --bg:#0f0a0d; --bg-soft:#170f13; --surface:#1d1318; --surface-2:#271a20; --surface-3:#33212a;
+  --border:#3d2730; --text:#f3ece9; --text-dim:#bda5ab; --text-faint:#7d6168;
+  --accent:#c89b3c; --accent-strong:#e3bb5a; --accent-dim:rgba(200,155,60,.14);
+  --brand:#8b1538; --brand-strong:#a91e44; --brand-dim:rgba(139,21,56,.16);
+  --ok:#3fb37f; --ok-dim:rgba(63,179,127,.14); --bad:#e0445c; --bad-dim:rgba(224,68,92,.15);
+  --pending:#d4a53d; --pending-dim:rgba(212,165,61,.12);
+  --shadow:0 8px 30px rgba(0,0,0,.45);
+}
+/* Accent color override applied on top of any theme via inline style on :root (--brand/--brand-strong/--brand-dim) */
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  transition:background .25s,color .25s;
+}
+::selection{background:var(--accent-dim);}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+a{color:var(--accent);}
+.hidden{display:none !important;}
+.mono{font-family:var(--font-mono);font-feature-settings:"tnum";letter-spacing:.02em;}
+
+/* ============================================================
+   BACKGROUND TEXTURE (subtle scanline grid, signature ambience)
+   ============================================================ */
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(200,155,60,.08), transparent 38%),
+    radial-gradient(circle at 85% 85%, rgba(139,21,56,.10), transparent 40%),
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size:auto,auto,42px 42px,42px 42px;
+  opacity:.35;
+  mask-image:linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.35));
+}
+[data-theme="light"] .bg-grid{opacity:.5;}
+
+/* ============================================================
+   LOGIN SCREEN
+   ============================================================ */
+#loginScreen{
+  position:fixed;inset:0;z-index:50;
+  display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(circle at 12% -10%, rgba(139,21,56,.55), transparent 45%),
+    radial-gradient(circle at 100% 110%, rgba(200,155,60,.16), transparent 50%),
+    var(--bg);
+  padding:20px;
+}
+[data-theme="light"] #loginScreen{
+  background:
+    radial-gradient(circle at 12% -10%, rgba(139,21,56,.10), transparent 45%),
+    radial-gradient(circle at 100% 110%, rgba(168,124,31,.10), transparent 50%),
+    var(--bg);
+}
+.login-shell{width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;}
+.login-card{
+  position:relative;
+  width:100%;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  padding:38px 32px 28px;
+  z-index:1;
+  overflow:hidden;
+}
+.login-brandbar{
+  position:absolute;top:0;left:0;right:0;height:5px;
+  background:linear-gradient(90deg, var(--brand) 0%, var(--brand) 60%, var(--accent) 100%);
+}
+.login-mark{
+  width:58px;height:58px;margin:4px auto 18px;
+  border-radius:14px;
+  background:linear-gradient(155deg, var(--brand-strong), var(--brand));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 18px rgba(139,21,56,.35);
+}
+.login-mark__m{
+  font-family:var(--font);font-weight:700;font-size:26px;color:#fff;letter-spacing:0;
+}
+.login-title{
+  text-align:center;font-size:20px;font-weight:700;letter-spacing:.01em;margin:0 0 6px;
+}
+.login-sub{
+  text-align:center;color:var(--text-dim);font-size:11.5px;margin:0 0 26px;
+  letter-spacing:.05em;
+}
+.lf-field{margin-bottom:15px;}
+.lf-field label{
+  display:block;font-size:12px;font-weight:600;color:var(--text-dim);margin-bottom:6px;
+}
+.lf-input-wrap{
+  position:relative;display:flex;align-items:center;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface-2);transition:border-color .12s, box-shadow .12s;
+}
+.lf-input-wrap:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-dim);}
+.lf-input-wrap svg{width:16px;height:16px;color:var(--text-faint);flex:none;margin-left:12px;}
+.lf-input{
+  flex:1;min-width:0;border:none;background:transparent;outline:none;
+  padding:11px 12px;font-family:var(--font);font-size:14px;color:var(--text);
+}
+.lf-input::placeholder{color:var(--text-faint);}
+.lf-eye{
+  flex:none;background:none;border:none;cursor:pointer;color:var(--text-faint);
+  display:flex;align-items:center;justify-content:center;padding:0 12px;height:100%;
+}
+.lf-eye:hover{color:var(--text-dim);}
+.lf-eye svg{width:16px;height:16px;margin:0;}
+.login-error{
+  color:var(--bad);font-size:12.5px;text-align:center;min-height:16px;margin:2px 0 6px;
+}
+.lf-submit{
+  width:100%;padding:12px 0;border-radius:var(--radius-sm);border:none;
+  background:linear-gradient(135deg, var(--brand-strong), var(--brand));
+  color:#fff;font-family:var(--font);font-size:14.5px;font-weight:700;letter-spacing:.02em;
+  cursor:pointer;transition:filter .12s, transform .08s;margin-top:6px;
+  box-shadow:0 6px 16px rgba(139,21,56,.3);
+}
+.lf-submit:hover{filter:brightness(1.08);}
+.lf-submit:active{transform:translateY(1px);}
+.lf-submit:disabled{opacity:.6;cursor:default;}
+.login-hint{
+  text-align:center;color:var(--text-faint);font-size:11px;margin-top:18px;line-height:1.6;
+}
+.login-foot{
+  text-align:center;color:var(--text-faint);font-size:10.5px;margin-top:18px;letter-spacing:.03em;
+}
+.login-card.shake{animation:loginshake .4s;}
+@keyframes loginshake{
+  10%,90%{transform:translateX(-1px);}
+  20%,80%{transform:translateX(2px);}
+  30%,50%,70%{transform:translateX(-4px);}
+  40%,60%{transform:translateX(4px);}
+}
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+#app{position:relative;z-index:1;display:flex;min-height:100vh;}
+
+.sidebar{
+  position:fixed;top:0;left:0;height:100vh;width:var(--sidebar-w);
+  background:var(--surface);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  z-index:40;
+  transition:transform .25s ease;
+}
+.sidebar__brand{
+  display:flex;align-items:center;gap:10px;
+  padding:18px 18px 14px;border-bottom:1px solid var(--border);
+}
+.sidebar__brand-icon{
+  width:34px;height:34px;border-radius:9px;flex:none;
+  background:linear-gradient(155deg, var(--brand-strong), var(--brand));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 10px rgba(139,21,56,.3);
+}
+.sidebar__brand-icon-m{font-family:var(--font);font-weight:700;font-size:15px;color:#fff;}
+.sidebar__brand-text b{display:block;font-size:14px;font-weight:700;line-height:1.25;}
+.sidebar__brand-text span{display:block;font-size:11px;color:var(--text-dim);letter-spacing:.06em;}
+
+.sidebar__nav{flex:1;overflow-y:auto;padding:12px;}
+.nav-label{
+  font-size:10.5px;letter-spacing:.14em;color:var(--text-faint);
+  text-transform:uppercase;margin:14px 10px 6px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 10px;border-radius:var(--radius-sm);
+  color:var(--text-dim);text-decoration:none;cursor:pointer;
+  font-size:13.5px;font-weight:500;margin-bottom:2px;
+  border:1px solid transparent;
+  transition:.12s;
+}
+.nav-item:hover{background:var(--surface-2);color:var(--text);}
+.nav-item.active{
+  background:var(--accent-dim);color:var(--accent-strong);
+  border-color:rgba(200,155,60,.3);
+}
+.nav-item__icon{width:17px;height:17px;flex:none;}
+.nav-item__label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nav-item__count{
+  font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);
+  background:var(--surface-2);border-radius:6px;padding:2px 6px;flex:none;
+}
+.nav-item.active .nav-item__count{color:var(--accent-strong);background:rgba(200,155,60,.14);}
+.nav-progress{
+  height:3px;border-radius:3px;background:var(--surface-3);overflow:hidden;margin-top:5px;
+}
+.nav-progress > div{height:100%;background:var(--ok);border-radius:3px;}
+
+.sidebar__footer{
+  padding:14px;border-top:1px solid var(--border);font-size:11.5px;color:var(--text-faint);
+}
+.sync-row{display:flex;align-items:center;gap:7px;margin-bottom:4px;}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--text-faint);flex:none;}
+.sync-dot.on{background:var(--ok);box-shadow:0 0 8px var(--ok-dim);}
+.sync-dot.off{background:var(--pending);}
+
+/* main */
+.main{flex:1;min-width:0;margin-left:var(--sidebar-w);display:flex;flex-direction:column;min-height:100vh;}
+.topbar{
+  position:sticky;top:0;z-index:30;
+  height:var(--topbar-h);
+  display:flex;align-items:center;gap:12px;
+  padding:0 22px;
+  background:rgba(10,15,29,.78);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+[data-theme="light"] .topbar{background:rgba(238,241,247,.8);}
+.hamburger{
+  display:none;width:36px;height:36px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--surface);color:var(--text);
+  align-items:center;justify-content:center;cursor:pointer;flex:none;
+}
+.topbar__title{font-size:16px;font-weight:700;letter-spacing:.01em;}
+.topbar__title small{display:block;font-size:11px;font-weight:400;color:var(--text-dim);letter-spacing:.04em;}
+.topbar__spacer{flex:1;}
+
+.search-wrap{position:relative;width:230px;}
+.search-wrap input{
+  width:100%;height:36px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--surface-2);color:var(--text);
+  padding:0 12px 0 34px;font-family:var(--font);font-size:13px;outline:none;
+}
+.search-wrap input:focus{border-color:var(--accent);}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--text-faint);}
+.search-results{
+  position:absolute;top:42px;left:0;right:0;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);max-height:340px;overflow-y:auto;z-index:60;
+}
+.search-results .sr-item{
+  display:flex;flex-direction:column;gap:2px;padding:9px 12px;
+  border-bottom:1px solid var(--border);cursor:pointer;
+}
+.search-results .sr-item:last-child{border-bottom:none;}
+.search-results .sr-item:hover{background:var(--surface-2);}
+.sr-item__top{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);}
+.sr-item__sn{font-family:var(--font-mono);font-size:13.5px;}
+.search-empty{padding:14px;text-align:center;color:var(--text-faint);font-size:12.5px;}
+
+.iconbtn{
+  width:36px;height:36px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--surface);color:var(--text-dim);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;
+  transition:.12s;
+}
+.iconbtn:hover{color:var(--text);border-color:var(--accent);}
+.iconbtn svg{width:16px;height:16px;}
+
+.role-badge{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 12px 6px 6px;border-radius:99px;
+  border:1px solid var(--border);background:var(--surface);
+  font-size:12px;color:var(--text-dim);white-space:nowrap;
+}
+.role-badge__avatar{
+  width:24px;height:24px;border-radius:50%;background:var(--accent-dim);
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--accent-strong);
+}
+
+/* content */
+.content{flex:1;padding:22px;max-width:1400px;width:100%;margin:0 auto;}
+.page{animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:18px;flex-wrap:wrap;}
+.page-head h1{font-size:22px;margin:0 0 4px;}
+.page-head p{margin:0;color:var(--text-dim);font-size:13px;}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 16px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--surface);color:var(--text);
+  font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;
+  transition:.12s;white-space:nowrap;
+}
+.btn:hover{border-color:var(--accent);color:var(--accent-strong);}
+.btn svg{width:15px;height:15px;}
+.btn--primary{background:var(--brand);border-color:var(--brand);color:#fff;}
+.btn--primary:hover{background:var(--brand-strong);border-color:var(--brand-strong);color:#fff;}
+.btn--danger{color:var(--bad);}
+.btn--danger:hover{border-color:var(--bad);}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* ============================================================
+   DASHBOARD: KPI cards
+   ============================================================ */
+.kpi-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px;
+}
+.kpi-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:16px 18px;position:relative;overflow:hidden;
+}
+.kpi-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);
+}
+.kpi-card.tone-ok::before{background:var(--ok);}
+.kpi-card.tone-bad::before{background:var(--bad);}
+.kpi-card.tone-pending::before{background:var(--pending);}
+.kpi-card.tone-accent::before{background:var(--accent);}
+.kpi-card__label{font-size:12px;color:var(--text-dim);margin-bottom:8px;letter-spacing:.02em;}
+.kpi-card__value{font-family:var(--font-mono);font-size:30px;font-weight:700;line-height:1;}
+.kpi-card__value span{font-size:14px;color:var(--text-faint);font-weight:500;}
+.kpi-card__sub{font-size:11.5px;color:var(--text-faint);margin-top:6px;}
+
+.section-title{font-size:14px;font-weight:700;margin:26px 0 12px;display:flex;align-items:center;gap:8px;}
+.section-title .tag{
+  font-family:var(--font-mono);font-size:10.5px;font-weight:600;color:var(--text-faint);
+  border:1px solid var(--border);padding:1px 7px;border-radius:5px;text-transform:none;letter-spacing:0;
+}
+
+/* branch summary cards */
+.branch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.branch-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:16px 18px;cursor:pointer;transition:.15s;
+}
+.branch-card:hover{border-color:var(--accent);transform:translateY(-1px);}
+.branch-card__top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.branch-card__name{font-size:15px;font-weight:700;}
+.branch-card__caretaker{font-size:11.5px;color:var(--text-dim);margin-top:2px;}
+.branch-card__pct{font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--accent-strong);}
+.progress-bar{height:7px;border-radius:5px;background:var(--surface-2);overflow:hidden;display:flex;margin-bottom:10px;}
+.progress-bar > .pb-ok{background:var(--ok);}
+.progress-bar > .pb-bad{background:var(--bad);}
+.progress-bar > .pb-pending{background:var(--surface-3);}
+.branch-card__stats{display:flex;gap:14px;font-size:12px;color:var(--text-dim);}
+.branch-card__stats b{font-family:var(--font-mono);color:var(--text);}
+.dot-legend{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+
+/* issues list */
+.issues-list{display:flex;flex-direction:column;gap:8px;}
+.issue-row{
+  display:flex;align-items:center;gap:12px;
+  background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--bad);
+  border-radius:var(--radius);padding:11px 14px;cursor:pointer;transition:.12s;
+}
+.issue-row:hover{background:var(--surface-2);}
+.issue-row__badge{
+  font-size:10.5px;font-weight:700;color:var(--bad);background:var(--bad-dim);
+  border-radius:6px;padding:3px 7px;flex:none;
+}
+.issue-row__main{flex:1;min-width:0;}
+.issue-row__sn{font-family:var(--font-mono);font-size:13.5px;}
+.issue-row__meta{font-size:11.5px;color:var(--text-dim);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.issue-row__store{font-size:11.5px;color:var(--text-faint);font-family:var(--font-mono);flex:none;}
+.empty-note{
+  text-align:center;color:var(--text-faint);font-size:13px;padding:30px 0;
+  border:1px dashed var(--border);border-radius:var(--radius);
+}
+
+/* ============================================================
+   BRANCH PAGE
+   ============================================================ */
+.branch-header{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:18px 20px;margin-bottom:18px;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+}
+.branch-header__info h2{margin:0 0 4px;font-size:19px;}
+.branch-header__info p{margin:0;font-size:12.5px;color:var(--text-dim);}
+.branch-header__info p b{color:var(--text);}
+.branch-header__stats{display:flex;gap:18px;}
+.bh-stat{text-align:center;}
+.bh-stat__value{font-family:var(--font-mono);font-size:22px;font-weight:700;}
+.bh-stat__label{font-size:10.5px;color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;margin-top:2px;}
+.bh-stat.ok .bh-stat__value{color:var(--ok);}
+.bh-stat.bad .bh-stat__value{color:var(--bad);}
+.bh-stat.pending .bh-stat__value{color:var(--pending);}
+
+.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.chip{
+  padding:7px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);
+  font-size:12.5px;color:var(--text-dim);cursor:pointer;font-weight:600;transition:.12s;
+}
+.chip.active{background:var(--brand-dim);color:var(--brand-strong);border-color:var(--brand);}
+.chip .chip-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+
+.group-title{
+  font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);
+  margin:22px 0 10px;display:flex;align-items:center;gap:10px;
+}
+.group-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.dcard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:12px;}
+
+/* device card — signature element */
+.dcard{
+  display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:border-color .15s, box-shadow .15s;
+}
+.dcard:focus-within, .dcard.flash{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
+.dcard__bar{width:5px;flex:none;background:var(--surface-3);transition:background .2s;}
+.dcard[data-status="ok"] .dcard__bar{background:var(--ok);}
+.dcard[data-status="bad"] .dcard__bar{background:var(--bad);}
+.dcard[data-status="pending"] .dcard__bar{background:var(--pending);opacity:.55;}
+.dcard__body{flex:1;padding:12px 14px;min-width:0;}
+.dcard__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.dcard__tagrow{display:flex;align-items:center;gap:7px;}
+.dcard__type{
+  font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--text-faint);
+  border:1px solid var(--border);border-radius:5px;padding:1px 6px;
+}
+.dcard__idx{font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint);}
+.dcard__led{
+  width:9px;height:9px;border-radius:50%;background:var(--surface-3);flex:none;
+  box-shadow:0 0 0 0 transparent;transition:.2s;
+}
+.dcard[data-status="ok"] .dcard__led{background:var(--ok);box-shadow:0 0 8px var(--ok-dim);}
+.dcard[data-status="bad"] .dcard__led{background:var(--bad);box-shadow:0 0 8px var(--bad-dim);}
+.dcard[data-status="pending"] .dcard__led{background:var(--pending);opacity:.5;}
+.dcard.flash .dcard__led{animation:ledpulse .5s ease;}
+@keyframes ledpulse{0%{transform:scale(1);}40%{transform:scale(1.7);}100%{transform:scale(1);}}
+
+.dcard__field{margin-bottom:7px;}
+.dcard__field label{display:block;font-size:10px;color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;}
+.dcard__field .val{font-family:var(--font-mono);font-size:14.5px;font-weight:600;word-break:break-all;}
+.dcard__slot{
+  display:inline-block;font-size:10px;color:var(--text-dim);background:var(--surface-2);
+  border-radius:5px;padding:1px 6px;font-family:var(--font-mono);margin-top:2px;
+}
+.dcard__actions{display:flex;gap:6px;margin:10px 0 0;}
+.seg{
+  flex:1;padding:8px 0;border-radius:var(--radius-sm);border:1px solid var(--border);
+  background:var(--surface-2);color:var(--text-dim);font-family:var(--font);font-size:12.5px;font-weight:700;
+  cursor:pointer;transition:.12s;display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.seg svg{width:13px;height:13px;}
+.seg:hover{border-color:var(--accent);}
+.seg--ok.active{background:var(--ok-dim);border-color:var(--ok);color:var(--ok);}
+.seg--bad.active{background:var(--bad-dim);border-color:var(--bad);color:var(--bad);}
+
+.dcard__remark{
+  width:100%;margin-top:8px;border-radius:var(--radius-sm);border:1px solid var(--border);
+  background:var(--surface-2);color:var(--text);font-family:var(--font);font-size:12.5px;
+  padding:7px 9px;resize:vertical;min-height:38px;outline:none;
+}
+.dcard__remark:focus{border-color:var(--bad);}
+.dcard__remark::placeholder{color:var(--text-faint);}
+.dcard__meta{font-size:10.5px;color:var(--text-faint);margin-top:8px;display:flex;justify-content:space-between;gap:6px;}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+#toast{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--surface-3);border:1px solid var(--border);color:var(--text);
+  padding:10px 18px;border-radius:99px;font-size:13px;box-shadow:var(--shadow);
+  z-index:100;opacity:0;transition:.25s;pointer-events:none;display:flex;align-items:center;gap:8px;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast svg{width:14px;height:14px;color:var(--ok);}
+#toast.toast--error svg{color:var(--bad);}
+
+/* overlay for mobile drawer */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:35;opacity:0;pointer-events:none;transition:.2s;
+}
+.overlay.show{opacity:1;pointer-events:auto;}
+
+/* confirm modal */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.modal{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  max-width:380px;width:100%;padding:22px;box-shadow:var(--shadow);
+}
+.modal h3{margin:0 0 8px;font-size:16px;}
+.modal p{margin:0 0 18px;font-size:13px;color:var(--text-dim);line-height:1.6;}
+.modal .btn-row{justify-content:flex-end;}
+.modal--form{max-width:460px;max-height:min(640px,90vh);overflow-y:auto;}
+
+/* ============================================================
+   ADMIN / SYSTEM MANAGEMENT PAGE
+   ============================================================ */
+.admin-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:18px 20px;margin-bottom:18px;
+}
+.admin-card__head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;
+}
+.admin-card__head > *{flex:0 0 auto;max-width:100%;}
+.admin-card__head h3{margin:0;font-size:14.5px;display:flex;align-items:center;gap:8px;}
+.admin-card__head h3 svg{width:17px;height:17px;flex:none;color:var(--accent-strong);}
+.admin-card__desc{font-size:12px;color:var(--text-dim);margin:-8px 0 14px;}
+.admin-add-row{display:flex;gap:8px;flex-wrap:wrap;}
+
+.field-input, select.field-input, textarea.field-input{
+  padding:8px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);
+  background:var(--surface-2);color:var(--text);font-family:var(--font);font-size:13px;outline:none;
+}
+.field-input:focus, select.field-input:focus{border-color:var(--accent);}
+.field-input::placeholder{color:var(--text-faint);}
+
+.admin-row-inline{display:flex;gap:8px;align-items:center;}
+.admin-row-inline select.field-input{flex:1;min-width:0;}
+.admin-row-inline .icon-action{flex:none;width:38px;height:38px;}
+
+.admin-table-wrap{overflow-x:auto;}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap;}
+.admin-table th{
+  text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);
+  padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700;
+}
+.admin-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.admin-table tbody tr:last-child td{border-bottom:none;}
+.admin-table tbody tr:hover{background:var(--surface-2);}
+.admin-table .mono{font-family:var(--font-mono);}
+.admin-table-empty{padding:22px 10px;text-align:center;color:var(--text-faint);font-size:13px;}
+
+.icon-action{
+  display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--surface);color:var(--text-dim);cursor:pointer;transition:.12s;
+}
+.icon-action:hover{border-color:var(--accent);color:var(--accent-strong);}
+.icon-action.danger:hover{border-color:var(--bad);color:var(--bad);}
+.icon-action svg{width:14px;height:14px;}
+.icon-action-row{display:flex;gap:6px;}
+
+.admin-filter-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.admin-filter-row .field-input{flex:none;}
+.admin-filter-row input.field-input{flex:1;min-width:160px;}
+
+.status-pill{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;
+}
+.status-pill.ok{background:var(--ok-dim);color:var(--ok);}
+.status-pill.bad{background:var(--bad-dim);color:var(--bad);}
+.status-pill.pending{background:var(--pending-dim);color:var(--pending);}
+
+.form-field{margin-bottom:13px;}
+.form-field label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:5px;}
+.form-field .field-input{width:100%;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;}
+.form-grid .form-field{grid-column:span 1;}
+.form-field--full{grid-column:1 / -1;}
+.form-hint{font-size:11px;color:var(--text-faint);margin-top:4px;}
+.form-hint svg{width:13px;height:13px;vertical-align:-2px;margin-right:3px;color:var(--accent);}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px){
+  .kpi-grid{grid-template-columns:repeat(3,1fr);}
+  .branch-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width: 860px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);box-shadow:var(--shadow);}
+  .main{margin-left:0;}
+  .hamburger{display:flex;}
+  .search-wrap{width:160px;}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .branch-grid{grid-template-columns:1fr;}
+  .branch-header{flex-direction:column;align-items:flex-start;}
+}
+@media (max-width: 540px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .kpi-card__value{font-size:24px;}
+  .content{padding:14px;}
+  .topbar{padding:0 14px;gap:8px;}
+  .search-wrap{display:none;}
+  .topbar.search-active .search-wrap{
+    display:block;position:absolute;left:14px;right:14px;top:100%;width:auto;margin-top:8px;
+  }
+  .role-badge span.role-label{display:none;}
+  .dcard-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+  .branch-header__stats{width:100%;justify-content:space-between;}
+  .form-grid{grid-template-columns:1fr;}
+  .admin-card{padding:14px;}
+  .admin-add-row{flex-direction:column;align-items:stretch;}
+}
+
+/* ============================================================
+   SETTINGS PANEL (ตั้งค่า)
+   ============================================================ */
+#settingsScreen{
+  position:fixed;inset:0;z-index:60;
+  display:flex;align-items:flex-start;justify-content:flex-end;
+  background:rgba(0,0,0,.45);
+  padding:0;
+}
+#settingsScreen.hidden{display:none !important;}
+.settings-panel{
+  width:100%;max-width:420px;height:100vh;
+  background:var(--surface);border-left:1px solid var(--border);
+  box-shadow:-10px 0 30px rgba(0,0,0,.35);
+  display:flex;flex-direction:column;
+  animation:settingsSlideIn .22s ease;
+}
+@keyframes settingsSlideIn{from{transform:translateX(24px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.settings-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:22px 22px 14px;border-bottom:1px solid var(--border);flex:none;
+}
+.settings-header h2{margin:0 0 4px;font-size:19px;font-weight:700;}
+.settings-header p{margin:0;color:var(--text-faint);font-size:12.5px;}
+.settings-close{
+  flex:none;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);
+  background:var(--surface-2);color:var(--text-dim);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.settings-close svg{width:15px;height:15px;}
+.settings-close:hover{color:var(--text);border-color:var(--text-faint);}
+.settings-body{flex:1;overflow-y:auto;padding:18px 22px 30px;}
+.settings-section{margin-bottom:22px;}
+.settings-section__title{
+  display:flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:700;color:var(--text-dim);margin:0 0 12px;letter-spacing:.01em;
+}
+.settings-section__title svg{width:15px;height:15px;color:var(--accent-strong);}
+
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.theme-card{
+  position:relative;border:1.5px solid var(--border);border-radius:var(--radius);
+  padding:12px 12px 11px;cursor:pointer;background:var(--surface-2);
+  transition:border-color .12s, transform .08s;
+}
+.theme-card:hover{transform:translateY(-1px);}
+.theme-card.active{border-color:var(--ok);box-shadow:0 0 0 3px var(--ok-dim);}
+.theme-card__swatches{display:flex;gap:5px;margin-bottom:10px;}
+.theme-card__swatches span{width:18px;height:18px;border-radius:6px;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);}
+.theme-card__name{font-size:13.5px;font-weight:700;margin:0 0 2px;}
+.theme-card__desc{font-size:11px;color:var(--text-faint);margin:0;}
+.theme-card__check{
+  position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;
+  background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;
+}
+.theme-card__check svg{width:11px;height:11px;}
+
+.accent-row{display:flex;gap:10px;flex-wrap:wrap;}
+.accent-swatch{
+  width:38px;height:38px;border-radius:11px;border:2px solid transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex:none;
+  transition:transform .08s, border-color .12s;
+}
+.accent-swatch:hover{transform:translateY(-1px);}
+.accent-swatch.active{border-color:var(--text);}
+.accent-swatch svg{width:15px;height:15px;color:#fff;opacity:0;}
+.accent-swatch.active svg{opacity:1;}
+
+.bgcolor-row{display:flex;align-items:center;gap:12px;}
+.bgcolor-swatch-wrap{
+  position:relative;flex:none;width:46px;height:46px;border-radius:12px;overflow:hidden;
+  border:1.5px solid var(--border);cursor:pointer;
+}
+.bgcolor-swatch-wrap input[type="color"]{
+  position:absolute;inset:-4px;width:calc(100% + 8px);height:calc(100% + 8px);border:none;padding:0;cursor:pointer;
+}
+.bgcolor-info{flex:1;min-width:0;}
+.bgcolor-info b{display:block;font-size:13.5px;}
+.bgcolor-info span{display:block;font-size:11.5px;color:var(--text-faint);margin-top:1px;}
+.bgcolor-reset{
+  flex:none;border:1px solid var(--border);background:var(--surface-2);color:var(--text-dim);
+  border-radius:var(--radius-sm);padding:7px 12px;font-size:12px;cursor:pointer;font-family:var(--font);
+}
+.bgcolor-reset:hover{color:var(--text);}
+
+.settings-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 0;border-bottom:1px solid var(--border);
+}
+.settings-row:last-child{border-bottom:none;}
+.settings-row__label b{display:block;font-size:13.5px;}
+.settings-row__label span{display:block;font-size:11.5px;color:var(--text-faint);margin-top:1px;}
+.switch{
+  position:relative;flex:none;width:42px;height:24px;border-radius:99px;background:var(--surface-3);
+  border:1px solid var(--border);cursor:pointer;transition:background .15s;
+}
+.switch.on{background:var(--ok);border-color:var(--ok);}
+.switch__knob{
+  position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .15s;
+}
+.switch.on .switch__knob{left:20px;}
+body.no-rounded *{border-radius:0 !important;}
+body.no-anim *{transition:none !important;animation:none !important;}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<!-- ============================================================
+     LOGIN SCREEN
+     ============================================================ -->
+<div id="loginScreen">
+  <div class="login-shell">
+    <div class="login-card">
+      <div class="login-mark">
+        <span class="login-mark__m">M</span>
+      </div>
+      <div class="login-brandbar"></div>
+      <h1 class="login-title">HHT Audit Inventory</h1>
+      <p class="login-sub">CP AXTRA · MAKRO &nbsp;|&nbsp; ระบบตรวจสอบเครื่องสแกนและแท่นชาร์จ</p>
+
+      <form id="loginForm" autocomplete="off">
+        <div class="lf-field">
+          <label for="loginUser">ชื่อผู้ใช้งาน</label>
+          <div class="lf-input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" id="loginUser" class="lf-input" placeholder="กรอกชื่อผู้ใช้งาน" autocapitalize="off" autocomplete="username" spellcheck="false">
+          </div>
+        </div>
+        <div class="lf-field">
+          <label for="loginPass">รหัสผ่าน</label>
+          <div class="lf-input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="loginPass" class="lf-input" placeholder="กรอกรหัสผ่าน" autocomplete="current-password">
+            <button type="button" class="lf-eye" id="loginPassToggle" tabindex="-1" aria-label="แสดงรหัสผ่าน">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="login-error" id="loginError"></div>
+        <button type="submit" class="lf-submit" id="loginSubmit">เข้าสู่ระบบ</button>
+      </form>
+
+      <div class="login-hint">สำหรับเจ้าหน้าที่ที่ได้รับสิทธิ์เท่านั้น · ติดต่อผู้ดูแลระบบหากลืมรหัสผ่าน</div>
+    </div>
+    <div class="login-foot">© <span id="loginYear"></span> CP AXTRA Public Company Limited — Makro Store Operations</div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     APP SHELL
+     ============================================================ -->
+<div id="app" class="hidden">
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+      <div class="sidebar__brand-icon">
+        <span class="sidebar__brand-icon-m">M</span>
+      </div>
+      <div class="sidebar__brand-text">
+        <b>HHT Audit</b>
+        <span>CP AXTRA · Makro</span>
+      </div>
+    </div>
+    <nav class="sidebar__nav" id="sidebarNav">
+      <!-- populated by JS -->
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sync-row"><span class="sync-dot" id="syncDot"></span><span id="syncLabel">กำลังเชื่อมต่อ…</span></div>
+      <div id="updatedLabel">—</div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar" id="topbar">
+      <button class="hamburger" id="hamburgerBtn" aria-label="เมนู">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar__title" id="topbarTitle"><span id="topbarMain">แดชบอร์ด</span><small id="topbarSub">ภาพรวมทั้งหมด</small></div>
+      <div class="topbar__spacer"></div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="ค้นหา S/N หรือเลขทรัพย์สิน...">
+        <div class="search-results hidden" id="searchResults"></div>
+      </div>
+      <button class="iconbtn" id="searchToggle" title="ค้นหา" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="iconbtn" id="themeToggle" title="สลับธีม">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <button class="iconbtn" id="settingsBtn" title="ตั้งค่า">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 7.04 4.29l.06.06A1.65 1.65 0 0 0 8.92 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <div class="role-badge" id="roleBadge">
+        <div class="role-badge__avatar" id="roleAvatar">?</div>
+        <span class="role-label" id="roleLabel">—</span>
+      </div>
+      <button class="iconbtn" id="logoutBtn" title="ออกจากระบบ">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </header>
+
+    <main class="content" id="content">
+      <!-- pages rendered by JS -->
+    </main>
+  </div>
+</div>
+
+<!-- ============================================================
+     SETTINGS PANEL
+     ============================================================ -->
+<div id="settingsScreen" class="hidden">
+  <div class="settings-panel">
+    <div class="settings-header">
+      <div>
+        <h2>ตั้งค่า</h2>
+        <p>ปรับแต่งธีมและรูปแบบการแสดงผล</p>
+      </div>
+      <button class="settings-close" id="settingsCloseBtn" aria-label="ปิด">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="settings-body">
+
+      <div class="settings-section">
+        <p class="settings-section__title">🎨 ธีมสี (THEME)</p>
+        <div class="theme-grid" id="themeGrid"><!-- populated by JS --></div>
+      </div>
+
+      <div class="settings-section">
+        <p class="settings-section__title">✨ สีเน้น (ACCENT)</p>
+        <div class="accent-row" id="accentRow"><!-- populated by JS --></div>
+      </div>
+
+      <div class="settings-section">
+        <p class="settings-section__title">🖌️ สีพื้นหลังกำหนดเอง (CUSTOM BACKGROUND)</p>
+        <div class="bgcolor-row">
+          <div class="bgcolor-swatch-wrap">
+            <input type="color" id="customBgInput" value="#0f0a0d">
+          </div>
+          <div class="bgcolor-info">
+            <b>เลือกสีพื้นหลังเอง</b>
+            <span>แตะวงกลมเพื่อเลือกสีที่ต้องการ</span>
+          </div>
+          <button class="bgcolor-reset" id="customBgReset">ล้างค่า</button>
+        </div>
+      </div>
+
+      <div class="settings-section" style="margin-bottom:0">
+        <p class="settings-section__title">⚙️ การแสดงผล</p>
+        <div class="settings-row">
+          <div class="settings-row__label">
+            <b>ภาพเคลื่อนไหว (Animations)</b>
+          </div>
+          <div class="switch on" id="animSwitch"><div class="switch__knob"></div></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__label">
+            <b>มุมโค้งมน (Rounded)</b>
+          </div>
+          <div class="switch on" id="roundedSwitch"><div class="switch__knob"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   DATA — extracted from Summary_Handheld__Inventory_Audit_.xlsx
+   ============================================================ */
+let STORES = [{"id": "ST156", "label": "ST.156", "caretaker": "AAA"}, {"id": "ST160", "label": "ST.160", "caretaker": "เมย์"}, {"id": "ST165", "label": "ST.165", "caretaker": "มีน"}, {"id": "ST166", "label": "ST.166", "caretaker": "CCC"}, {"id": "ST167", "label": "ST.167", "caretaker": "ทอม"}, {"id": "ST171", "label": "ST.171", "caretaker": "BBB"}];
+const RAW_DATA = {"ST167": {"caretaker": "ทอม", "hht": [{"no": "1", "sn": "17241522506967", "asset": "219"}, {"no": "2", "sn": "17241522506984", "asset": "220"}, {"no": "3", "sn": "17241522506987", "asset": "221"}, {"no": "4", "sn": "17241522506988", "asset": "222"}, {"no": "5", "sn": "17241522506991", "asset": "223"}, {"no": "6", "sn": "17241522507063", "asset": "244"}, {"no": "7", "sn": "17241522507065", "asset": "245"}, {"no": "8", "sn": "17241522507071", "asset": "246"}, {"no": "9", "sn": "17241522507072", "asset": "247"}, {"no": "10", "sn": "17241522507073", "asset": "248"}, {"no": "11", "sn": "17241522507078", "asset": "249"}, {"no": "12", "sn": "17241522507081", "asset": "250"}, {"no": "13", "sn": "17241522507088", "asset": "251"}, {"no": "14", "sn": "17241522507094", "asset": "253"}, {"no": "15", "sn": "17241522507090", "asset": "253"}, {"no": "16", "sn": "17241522507095", "asset": "254"}, {"no": "17", "sn": "17241522507097", "asset": "255"}, {"no": "18", "sn": "17241522507100", "asset": "256"}, {"no": "19", "sn": "17241522507101", "asset": "257"}, {"no": "20", "sn": "17241522507104", "asset": "258"}, {"no": "21", "sn": "17241522507118", "asset": "259"}, {"no": "22", "sn": "17241522507121", "asset": "260"}, {"no": "23", "sn": "17241522507123", "asset": "261"}, {"no": "24", "sn": "17241522507125", "asset": "262"}, {"no": "25", "sn": "17241522507126", "asset": "263"}, {"no": "26", "sn": "17241522507128", "asset": "264"}, {"no": "27", "sn": "17241522507135", "asset": "265"}, {"no": "28", "sn": "17241522507138", "asset": "266"}, {"no": "29", "sn": "17241522507140", "asset": "267"}, {"no": "30", "sn": "17241522507143", "asset": "268"}, {"no": "31", "sn": "17241522507145", "asset": "269"}, {"no": "32", "sn": "17241522507146", "asset": "270"}, {"no": "33", "sn": "17241522507148", "asset": "271"}, {"no": "34", "sn": "17241522507151", "asset": "272"}, {"no": "35", "sn": "17241522507152", "asset": "273"}, {"no": "36", "sn": "17241522507154", "asset": "274"}, {"no": "37", "sn": "17241522507157", "asset": "275"}, {"no": "38", "sn": "17241522507158", "asset": "276"}, {"no": "39", "sn": "17241522507161", "asset": "277"}, {"no": "40", "sn": "17241522507167", "asset": "278"}, {"no": "41", "sn": "17241522507171", "asset": "279"}, {"no": "42", "sn": "17241522507175", "asset": "280"}, {"no": "43", "sn": "17241522507176", "asset": "281"}, {"no": "44", "sn": "17241522507187", "asset": "282"}, {"no": "45", "sn": "17241522507188", "asset": "283"}, {"no": "46", "sn": "17241522507192", "asset": "284"}, {"no": "47", "sn": "17241522507196", "asset": "285"}, {"no": "48", "sn": "17241522507197", "asset": "286"}, {"no": "49", "sn": "17241522507199", "asset": "287"}, {"no": "50", "sn": "17241522507200", "asset": "288"}, {"no": "51", "sn": "17241522507201", "asset": "289"}, {"no": "52", "sn": "17241522507202", "asset": "290"}, {"no": "53", "sn": "17241522507206", "asset": "291"}, {"no": "54", "sn": "17241522507216", "asset": "292"}, {"no": "55", "sn": "17241522507218", "asset": "293"}, {"no": "56", "sn": "17241522507219", "asset": "294"}, {"no": "57", "sn": "17241522507228", "asset": "295"}, {"no": "58", "sn": "17241522507229", "asset": "296"}, {"no": "59", "sn": "17241522507237", "asset": "297"}, {"no": "60", "sn": "17241522507238", "asset": "298"}, {"no": "61", "sn": "17241522507242", "asset": "299"}, {"no": "62", "sn": "17242522500001", "asset": "300"}, {"no": "63", "sn": "17242522500003", "asset": "301"}, {"no": "64", "sn": "17242522500004", "asset": "302"}, {"no": "65", "sn": "17242522500007", "asset": "303"}, {"no": "66", "sn": "17242522500059", "asset": "319"}, {"no": "67", "sn": "17242522500063", "asset": "320"}, {"no": "68", "sn": "17242522500069", "asset": "321"}, {"no": "69", "sn": "17242522500071", "asset": "322"}, {"no": "70", "sn": "17242522500094", "asset": "323"}, {"no": "71", "sn": "17242522500115", "asset": "324"}, {"no": "72", "sn": "17242522500126", "asset": "325"}, {"no": "73", "sn": "17242522500299", "asset": "326"}, {"no": "74", "sn": "17242522500300", "asset": "327"}, {"no": "75", "sn": "17242522500322", "asset": "328"}], "battery": [{"no": "1", "sn": "17251522507940", "asset": "25", "remark": "4 slots"}, {"no": "2", "sn": "17251522507949", "asset": "26", "remark": "4 slots"}, {"no": "3", "sn": "17251522507951", "asset": "27", "remark": "4 slots"}, {"no": "4", "sn": "17251522507943", "asset": "28", "remark": "4 slots"}]}, "ST160": {"caretaker": "เมย์", "hht": [{"no": "1", "sn": "20302522501723", "asset": "9"}, {"no": "2", "sn": "20302622614947", "asset": "10"}, {"no": "3", "sn": "20302522514951", "asset": "11"}, {"no": "4", "sn": "20302522514961", "asset": "12"}, {"no": "5", "sn": "20302522514963", "asset": "13"}, {"no": "6", "sn": "20302522514968", "asset": "14"}, {"no": "7", "sn": "20302522514976", "asset": "15"}, {"no": "8", "sn": "20302522514996", "asset": "16"}, {"no": "9", "sn": "20302522515003", "asset": "17"}, {"no": "10", "sn": "20302522515005", "asset": "18"}, {"no": "11", "sn": "20302522515007", "asset": "19"}, {"no": "12", "sn": "20302522515009", "asset": "20"}, {"no": "13", "sn": "20302522515016", "asset": "21"}, {"no": "14", "sn": "20302522515039", "asset": "22"}, {"no": "15", "sn": "20302522515051", "asset": "23"}, {"no": "16", "sn": "20302522515087", "asset": "24"}, {"no": "17", "sn": "20302522515115", "asset": "25"}, {"no": "18", "sn": "20302522515153", "asset": "26"}, {"no": "19", "sn": "20302522515170", "asset": "27"}, {"no": "20", "sn": "20302522515202", "asset": "28"}, {"no": "21", "sn": "20302522515206", "asset": "29"}, {"no": "22", "sn": "20302522515263", "asset": "30"}, {"no": "23", "sn": "20302522515289", "asset": "31"}, {"no": "24", "sn": "20302522515301", "asset": "32"}, {"no": "25", "sn": "20302522515324", "asset": "33"}, {"no": "26", "sn": "20302522515346", "asset": "34"}, {"no": "27", "sn": "20302522515359", "asset": "35"}, {"no": "28", "sn": "20302522515363", "asset": "36"}, {"no": "29", "sn": "20302522515390", "asset": "37"}, {"no": "30", "sn": "20302522515468", "asset": "38"}, {"no": "31", "sn": "20302522515470", "asset": "39"}, {"no": "32", "sn": "20302522515472", "asset": "40"}, {"no": "33", "sn": "20302522515484", "asset": "41"}, {"no": "34", "sn": "20303522509587", "asset": "42"}, {"no": "35", "sn": "20303522509588", "asset": "43"}, {"no": "36", "sn": "20303522509591", "asset": "44"}, {"no": "37", "sn": "20303522509592", "asset": "45"}, {"no": "38", "sn": "20303522509598", "asset": "46"}, {"no": "39", "sn": "20303522509626", "asset": "49"}, {"no": "40", "sn": "20303522509627", "asset": "50"}, {"no": "41", "sn": "20303522509628", "asset": "51"}, {"no": "42", "sn": "20303522509631", "asset": "52"}, {"no": "43", "sn": "20303522509639", "asset": "53"}, {"no": "44", "sn": "20303522509645", "asset": "54"}, {"no": "45", "sn": "20303522509648", "asset": "55"}, {"no": "46", "sn": "20303522509656", "asset": "56"}, {"no": "47", "sn": "20303522509661", "asset": "57"}, {"no": "48", "sn": "20303522509662", "asset": "58"}, {"no": "49", "sn": "20303522509664", "asset": "59"}, {"no": "50", "sn": "20303522509668", "asset": "60"}, {"no": "51", "sn": "20303522509678", "asset": "61"}, {"no": "52", "sn": "20303522509684", "asset": "62"}, {"no": "53", "sn": "20303522509686", "asset": "63"}, {"no": "54", "sn": "20303522509688", "asset": "64"}, {"no": "55", "sn": "20303522509692", "asset": "65"}, {"no": "56", "sn": "20303522509695", "asset": "66"}, {"no": "57", "sn": "20303522509713", "asset": "67"}, {"no": "58", "sn": "20303522509731", "asset": "68"}, {"no": "59", "sn": "20302522515018", "asset": "110"}, {"no": "60", "sn": "20302522515030", "asset": "111"}, {"no": "61", "sn": "20302522514993", "asset": "109"}, {"no": "62", "sn": "20302522514984", "asset": "108"}, {"no": "63", "sn": "20302522514979", "asset": "107"}], "battery": [{"no": "1", "sn": "20307522506226", "asset": "40", "remark": "4 slots"}, {"no": "2", "sn": "20307522506234", "asset": "41", "remark": "4 slots"}, {"no": "3", "sn": "20307522506268", "asset": "42", "remark": "4 slots"}, {"no": "4", "sn": "20307522506270", "asset": "43", "remark": "4 slots"}]}, "ST171": {"caretaker": "BBB", "hht": [{"no": "1", "sn": "20302522514954", "asset": "178"}, {"no": "2", "sn": "20302522514955", "asset": "179"}, {"no": "3", "sn": "20302522514959", "asset": "180"}, {"no": "4", "sn": "20302522514971", "asset": "181"}, {"no": "5", "sn": "20302522514972", "asset": "182"}, {"no": "6", "sn": "20302522514974", "asset": "183"}, {"no": "7", "sn": "20302522514977", "asset": "184"}, {"no": "8", "sn": "20302522514980", "asset": "185"}, {"no": "9", "sn": "20302522514981", "asset": "186"}, {"no": "10", "sn": "20302522514982", "asset": "187"}, {"no": "11", "sn": "20302522514985", "asset": "188"}, {"no": "12", "sn": "20302522514987", "asset": "189"}, {"no": "13", "sn": "20302522514990", "asset": "190"}, {"no": "14", "sn": "20302522514997", "asset": "191"}, {"no": "15", "sn": "20302522514998", "asset": "192"}, {"no": "16", "sn": "20302525514999", "asset": "193"}, {"no": "17", "sn": "20302522515000", "asset": "194"}, {"no": "18", "sn": "20302522515002", "asset": "195"}, {"no": "19", "sn": "20302522515010", "asset": "196"}, {"no": "20", "sn": "20302522515011", "asset": "197"}, {"no": "21", "sn": "20302522515012", "asset": "198"}, {"no": "22", "sn": "20302522515013", "asset": "199"}, {"no": "23", "sn": "20302522515014", "asset": "200"}, {"no": "24", "sn": "20302522515022", "asset": "201"}, {"no": "25", "sn": "20302522515029", "asset": "202"}, {"no": "26", "sn": "20302522515035", "asset": "203"}, {"no": "27", "sn": "20302522515042", "asset": "204"}, {"no": "28", "sn": "20302522515053", "asset": "205"}, {"no": "29", "sn": "20302522515099", "asset": "206"}, {"no": "30", "sn": "20302522515100", "asset": "207"}, {"no": "31", "sn": "20302522515130", "asset": "208"}, {"no": "32", "sn": "20302522515133", "asset": "209"}, {"no": "33", "sn": "20302522515197", "asset": "210"}, {"no": "34", "sn": "20302522515219", "asset": "211"}, {"no": "35", "sn": "20302522515258", "asset": "212"}, {"no": "36", "sn": "20302522515284", "asset": "213"}, {"no": "37", "sn": "20302522515285", "asset": "214"}, {"no": "38", "sn": "20302525515293", "asset": "215"}, {"no": "39", "sn": "20302522515314", "asset": "216"}, {"no": "40", "sn": "20302522515316", "asset": "217"}, {"no": "41", "sn": "20302522515319", "asset": "218"}, {"no": "42", "sn": "20302522515341", "asset": "219"}, {"no": "43", "sn": "20302522515360", "asset": "220"}, {"no": "44", "sn": "20301522515376", "asset": "221"}, {"no": "45", "sn": "20302522515469", "asset": "222"}, {"no": "46", "sn": "20302522515473", "asset": "223"}, {"no": "47", "sn": "20303522509584", "asset": "224"}, {"no": "48", "sn": "20303522509594", "asset": "225"}, {"no": "49", "sn": "20303522509611", "asset": "226"}, {"no": "50", "sn": "20303522509612", "asset": "227"}, {"no": "51", "sn": "20303522509614", "asset": "228"}, {"no": "52", "sn": "20303522509615", "asset": "229"}, {"no": "53", "sn": "20303522509617", "asset": "230"}, {"no": "54", "sn": "20303522509619", "asset": "231"}, {"no": "55", "sn": "20303522509620", "asset": "232"}, {"no": "56", "sn": "20303522509633", "asset": "233"}, {"no": "57", "sn": "20303522509635", "asset": "234"}, {"no": "58", "sn": "20303522509640", "asset": "235"}, {"no": "59", "sn": "20303522509651", "asset": "236"}, {"no": "60", "sn": "20303522509655", "asset": "237"}, {"no": "61", "sn": "20303522509660", "asset": "238"}, {"no": "62", "sn": "20303522509663", "asset": "239"}, {"no": "63", "sn": "20303522509673", "asset": "240"}, {"no": "64", "sn": "20303522509674", "asset": "241"}, {"no": "65", "sn": "20303522509675", "asset": "242"}, {"no": "66", "sn": "20303522509681", "asset": "243"}, {"no": "67", "sn": "20303522509683", "asset": "244"}, {"no": "68", "sn": "20303522509704", "asset": "245"}, {"no": "69", "sn": "20303522509707", "asset": "246"}, {"no": "70", "sn": "20303522509723", "asset": "247"}, {"no": "71", "sn": "20303522509728", "asset": "248"}, {"no": "72", "sn": "20303522509756", "asset": "249"}, {"no": "73", "sn": "20303522509757", "asset": "250"}, {"no": "74", "sn": "20303522509760", "asset": "251"}, {"no": "75", "sn": "20303522509763", "asset": "252"}], "battery": [{"no": "1", "sn": "20279523700581", "asset": "30", "remark": "4 slots"}, {"no": "2", "sn": "20279523700604", "asset": "31", "remark": "4 slots"}, {"no": "3", "sn": "20280523702946", "asset": "32", "remark": "4 slots"}, {"no": "4", "sn": "20280523702977", "asset": "33", "remark": "4 slots"}]}, "ST165": {"caretaker": "มีน", "hht": [{"no": "1", "sn": "20302522515043", "asset": "112"}, {"no": "2", "sn": "20302522515045", "asset": "113"}, {"no": "3", "sn": "20302522515056", "asset": "114"}, {"no": "4", "sn": "20302522515112", "asset": "115"}, {"no": "5", "sn": "20302522515400", "asset": "116"}, {"no": "6", "sn": "20303522509586", "asset": "117"}, {"no": "7", "sn": "20303522509597", "asset": "118"}, {"no": "8", "sn": "20303522509616", "asset": "119"}, {"no": "9", "sn": "20303533609634", "asset": "120"}, {"no": "10", "sn": "20303522509649", "asset": "121"}, {"no": "11", "sn": "20303522509667", "asset": "122"}, {"no": "12", "sn": "20303522509669", "asset": "123"}, {"no": "13", "sn": "20303522509677", "asset": "124"}, {"no": "14", "sn": "20303522509682", "asset": "125"}, {"no": "15", "sn": "20303522509691", "asset": "126"}, {"no": "16", "sn": "20303522509693", "asset": "127"}, {"no": "17", "sn": "20303522509702", "asset": "128"}, {"no": "18", "sn": "20303522509708", "asset": "129"}, {"no": "19", "sn": "20303522509717", "asset": "130"}, {"no": "20", "sn": "20303522509721", "asset": "131"}, {"no": "21", "sn": "20303522509725", "asset": "132"}, {"no": "22", "sn": "20303522509729", "asset": "133"}, {"no": "23", "sn": "20303522509772", "asset": "134"}, {"no": "24", "sn": "20303522509780", "asset": "135"}, {"no": "25", "sn": "20303522509789", "asset": "136"}, {"no": "26", "sn": "20303522509794", "asset": "137"}, {"no": "27", "sn": "20303522509796", "asset": "138"}, {"no": "28", "sn": "20303522509802", "asset": "139"}, {"no": "29", "sn": "20303522509808", "asset": "140"}, {"no": "30", "sn": "20303522509809", "asset": "141"}, {"no": "31", "sn": "20303522509824", "asset": "142"}, {"no": "32", "sn": "20303522509854", "asset": "143"}, {"no": "33", "sn": "20303522509855", "asset": "144"}, {"no": "34", "sn": "20303522509862", "asset": "145"}, {"no": "35", "sn": "20303522509869", "asset": "146"}, {"no": "36", "sn": "20303522509872", "asset": "147"}, {"no": "37", "sn": "20303522509874", "asset": "148"}, {"no": "38", "sn": "20303522509902", "asset": "150"}, {"no": "39", "sn": "20303522509880", "asset": "149"}, {"no": "40", "sn": "20099522524241", "asset": "151"}, {"no": "41", "sn": "20100522512553", "asset": "152"}, {"no": "42", "sn": "20101522514003", "asset": "153"}, {"no": "43", "sn": "20101522524397", "asset": "154"}, {"no": "44", "sn": "20105522515068", "asset": "155"}, {"no": "45", "sn": "20105522515075", "asset": "156"}, {"no": "46", "sn": "20105522515085", "asset": "157"}, {"no": "47", "sn": "20105522515099", "asset": "158"}, {"no": "48", "sn": "20105522515114", "asset": "159"}, {"no": "49", "sn": "20105522515116", "asset": "160"}, {"no": "50", "sn": "20105522515135", "asset": "161"}, {"no": "51", "sn": "20105522515153", "asset": "162"}, {"no": "52", "sn": "20105522515167", "asset": "163"}, {"no": "53", "sn": "20105522515173", "asset": "164"}, {"no": "54", "sn": "20105522515175", "asset": "165"}, {"no": "55", "sn": "20105522515178", "asset": "166"}, {"no": "56", "sn": "20105522515183", "asset": "167"}, {"no": "57", "sn": "20105522515184", "asset": "168"}, {"no": "58", "sn": "20302522501877", "asset": "169"}, {"no": "59", "sn": "20302522514939", "asset": "170"}, {"no": "60", "sn": "20302522514943", "asset": "171"}, {"no": "61", "sn": "20302522514945", "asset": "173"}, {"no": "62", "sn": "20302522514946", "asset": "174"}, {"no": "63", "sn": "20302522514948", "asset": "175"}, {"no": "64", "sn": "20302522514949", "asset": "176"}, {"no": "65", "sn": "20302522514950", "asset": "177"}], "battery": [{"no": "1", "sn": "17251522508013", "asset": "OPC18", "remark": "4SLOTS"}, {"no": "2", "sn": "17251522508041", "asset": "OPC11", "remark": "4SLOTS"}, {"no": "3", "sn": "17251522508012", "asset": "24", "remark": "4SLOTS"}, {"no": "4", "sn": "17251522508054", "asset": "22", "remark": "4SLOTS"}]}, "ST166": {"caretaker": "CCC", "hht": [{"no": "1", "sn": "17241522506948", "asset": "212"}, {"no": "2", "sn": "17241522506951", "asset": "213"}, {"no": "3", "sn": "17241522506952", "asset": "214"}, {"no": "4", "sn": "17241522506953", "asset": "215"}, {"no": "5", "sn": "17241522506954", "asset": "216"}, {"no": "6", "sn": "20303522509768", "asset": "253"}, {"no": "7", "sn": "20303522509770", "asset": "254"}, {"no": "8", "sn": "20303522509773", "asset": "255"}, {"no": "9", "sn": "20303522509775", "asset": "256"}, {"no": "10", "sn": "20303522509778", "asset": "257"}, {"no": "11", "sn": "20303522509779", "asset": "258"}, {"no": "12", "sn": "20303522509785", "asset": "259"}, {"no": "13", "sn": "20303522509787", "asset": "260"}, {"no": "14", "sn": "20303522509797", "asset": "261"}, {"no": "15", "sn": "20303522509801", "asset": "262"}, {"no": "16", "sn": "20303522509814", "asset": "263"}, {"no": "17", "sn": "20303522509825", "asset": "264"}, {"no": "18", "sn": "20303522509827", "asset": "265"}, {"no": "19", "sn": "20303522509829", "asset": "266"}, {"no": "20", "sn": "20303522509830", "asset": "267"}, {"no": "21", "sn": "20303522509831", "asset": "268"}, {"no": "22", "sn": "20303522509832", "asset": "269"}, {"no": "23", "sn": "20303522509834", "asset": "270"}, {"no": "24", "sn": "20303522509835", "asset": "271"}, {"no": "25", "sn": "20303522509838", "asset": "272"}, {"no": "26", "sn": "20303522509839", "asset": "273"}, {"no": "27", "sn": "20303522509840", "asset": "274"}, {"no": "28", "sn": "20303522509842", "asset": "275"}, {"no": "29", "sn": "20303522509843", "asset": "276"}, {"no": "30", "sn": "20303522509848", "asset": "277"}, {"no": "31", "sn": "20303522509850", "asset": "278"}, {"no": "32", "sn": "20303522509852", "asset": "279"}, {"no": "33", "sn": "20303522509853", "asset": "280"}, {"no": "34", "sn": "20303522509859", "asset": "281"}, {"no": "35", "sn": "20303522509861", "asset": "282"}, {"no": "36", "sn": "20303522509865", "asset": "283"}, {"no": "37", "sn": "20303522509871", "asset": "284"}, {"no": "38", "sn": "20303522509877", "asset": "285"}, {"no": "39", "sn": "20303522509881", "asset": "286"}, {"no": "40", "sn": "20303522509882", "asset": "287"}, {"no": "41", "sn": "20303522509883", "asset": "288"}, {"no": "42", "sn": "20303522509884", "asset": "289"}, {"no": "43", "sn": "20303522509888", "asset": "290"}, {"no": "44", "sn": "20303522509895", "asset": "291"}, {"no": "45", "sn": "20303522509898", "asset": "292"}, {"no": "46", "sn": "20329522506718", "asset": "293"}, {"no": "47", "sn": "20329522506719", "asset": "294"}, {"no": "48", "sn": "20356522508639", "asset": "295"}, {"no": "49", "sn": "20357522508285", "asset": "296"}, {"no": "50", "sn": "20357522508342", "asset": "297"}, {"no": "51", "sn": "20357522508349", "asset": "298"}, {"no": "52", "sn": "20357522508371", "asset": "299"}, {"no": "53", "sn": "20357522508514", "asset": "300"}, {"no": "54", "sn": "20357522508543", "asset": "301"}, {"no": "55", "sn": "20357522508570", "asset": "302"}, {"no": "56", "sn": "20357522508607", "asset": "303"}, {"no": "57", "sn": "20361522523455", "asset": "304"}, {"no": "58", "sn": "17242522500009", "asset": "304"}, {"no": "59", "sn": "20361522523842", "asset": "305"}, {"no": "60", "sn": "14242522500012", "asset": "305"}, {"no": "61", "sn": "20362522508179", "asset": "306"}, {"no": "62", "sn": "17242522500016", "asset": "306"}, {"no": "63", "sn": "20362522508191", "asset": "307"}, {"no": "64", "sn": "17242522500026", "asset": "307"}, {"no": "65", "sn": "20362522508384", "asset": "308"}, {"no": "66", "sn": "17242522500027", "asset": "308"}, {"no": "67", "sn": "20362522508393", "asset": "309"}, {"no": "68", "sn": "17242522500031", "asset": "309"}, {"no": "69", "sn": "17242522500033", "asset": "310"}, {"no": "70", "sn": "17242522500042", "asset": "313"}, {"no": "71", "sn": "17242525500043", "asset": "314"}, {"no": "72", "sn": "17242522500045", "asset": "315"}, {"no": "73", "sn": "17242522500046", "asset": "316"}, {"no": "74", "sn": "17242522500050", "asset": "317"}, {"no": "75", "sn": "17242522500057", "asset": "318"}], "battery": [{"no": "1", "sn": "20307522506222", "asset": "36", "remark": ""}, {"no": "2", "sn": "20307522506172", "asset": "37", "remark": ""}, {"no": "3", "sn": "20307522506205", "asset": "38", "remark": ""}, {"no": "4", "sn": "20307522506223", "asset": "39", "remark": ""}]}, "ST156": {"caretaker": "AAA", "hht": [{"no": "1", "sn": "17241522506959", "asset": "217"}, {"no": "2", "sn": "17241522506943", "asset": "211"}, {"no": "3", "sn": "17241522506942", "asset": "210"}, {"no": "4", "sn": "17241522506940", "asset": "209"}, {"no": "5", "sn": "17241522506938", "asset": "208"}, {"no": "6", "sn": "17241522506933", "asset": "207"}, {"no": "7", "sn": "17241522506930", "asset": "206"}, {"no": "8", "sn": "17241522506929", "asset": "205"}, {"no": "9", "sn": "17241522506869", "asset": "189"}, {"no": "10", "sn": "17241522506870", "asset": "190"}, {"no": "11", "sn": "17241522506896", "asset": "202"}, {"no": "12", "sn": "17241522506899", "asset": "203"}, {"no": "13", "sn": "17241522506902", "asset": "204"}, {"no": "14", "sn": "17242522500037", "asset": "311"}, {"no": "15", "sn": "17242522500039", "asset": "312"}, {"no": "16", "sn": "17241522506966", "asset": "218"}, {"no": "17", "sn": "17241522506881", "asset": "197"}, {"no": "18", "sn": "17241522506880", "asset": "196"}, {"no": "19", "sn": "17241522506878", "asset": "195"}, {"no": "20", "sn": "17241522506877", "asset": "194"}, {"no": "21", "sn": "17241522506887", "asset": "198"}, {"no": "22", "sn": "17241522506893", "asset": "201"}, {"no": "23", "sn": "17241522506889", "asset": "200"}, {"no": "24", "sn": "17241522506888", "asset": "199"}, {"no": "25", "sn": "17241522506864", "asset": "185"}, {"no": "26", "sn": "17241522506862", "asset": "184"}, {"no": "27", "sn": "17241522506865", "asset": "186"}, {"no": "28", "sn": "17241522506867", "asset": "188"}, {"no": "29", "sn": "17241522506866", "asset": "187"}, {"no": "30", "sn": "17241522506876", "asset": "193"}, {"no": "31", "sn": "17241522506874", "asset": "192"}, {"no": "32", "sn": "17241522506872", "asset": "191"}, {"no": "33", "sn": "20302522501596", "asset": "101"}, {"no": "34", "sn": "20303522509851", "asset": "82"}, {"no": "35", "sn": "20303522509873", "asset": "88"}, {"no": "36", "sn": "20302522514987", "asset": "105"}, {"no": "37", "sn": "20303522509886", "asset": "90"}, {"no": "38", "sn": "20303522509820", "asset": "78"}, {"no": "39", "sn": "20303522509864", "asset": "85"}, {"no": "40", "sn": "20357522508360", "asset": "98"}, {"no": "41", "sn": "20303522509819", "asset": "77"}, {"no": "42", "sn": "20303522509766", "asset": "71"}, {"no": "43", "sn": "20302522514942", "asset": "103"}, {"no": "44", "sn": "20303522509849", "asset": "81"}, {"no": "45", "sn": "20302522514940", "asset": "102"}, {"no": "46", "sn": "20303522509891", "asset": "93"}, {"no": "47", "sn": "20356522508656", "asset": "97"}, {"no": "48", "sn": "20303522509875", "asset": "89"}, {"no": "49", "sn": "20303522509860", "asset": "83"}, {"no": "50", "sn": "20303522509894", "asset": "95"}, {"no": "51", "sn": "20303522509816", "asset": "76"}, {"no": "52", "sn": "20303522509890", "asset": "92"}, {"no": "53", "sn": "20303522509805", "asset": "74"}, {"no": "54", "sn": "20302522514970", "asset": "103"}, {"no": "55", "sn": "20302522514956", "asset": "104"}, {"no": "56", "sn": "20303522509806", "asset": "75"}, {"no": "57", "sn": "20303522509889", "asset": "91"}, {"no": "58", "sn": "20303522509892", "asset": "94"}, {"no": "59", "sn": "20303522509846", "asset": "80"}, {"no": "60", "sn": "20303522509803", "asset": "73"}, {"no": "61", "sn": "20303522509870", "asset": "87"}, {"no": "62", "sn": "20357522508456", "asset": "99"}, {"no": "63", "sn": "20357522508488", "asset": "100"}, {"no": "64", "sn": "20303522509863", "asset": "84"}, {"no": "65", "sn": "20307622611091", "asset": "96"}, {"no": "66", "sn": "20303522509781", "asset": "72"}, {"no": "67", "sn": "20303522509826", "asset": "79"}, {"no": "68", "sn": "20259522519226", "asset": "4"}, {"no": "69", "sn": "20252522510786", "asset": "3"}, {"no": "70", "sn": "20259522519216", "asset": "6"}, {"no": "71", "sn": "20302522501642", "asset": "8"}, {"no": "72", "sn": "20259522519217", "asset": "7"}, {"no": "73", "sn": "20105522515156", "asset": "1"}, {"no": "74", "sn": "20105522515168", "asset": "2"}, {"no": "75", "sn": "20259522519176", "asset": "5"}], "battery": [{"no": "1", "sn": "17251522507986", "asset": "16", "remark": "4 slots"}, {"no": "2", "sn": "17251522508014", "asset": "17", "remark": "4 slots"}, {"no": "3", "sn": "17251522507978", "asset": "15", "remark": "4 slots"}, {"no": "4", "sn": "17251522507944", "asset": "29", "remark": "4 slots"}]}};
+let CARETAKERS = ["AAA", "เมย์", "มีน", "CCC", "ทอม", "BBB", "Piyabut Kamthong( inventory1 )", "Hemmarach Chaiwang( inventory2 )", "Warunee Seesopol( inventory3 )", "Worrapot Suwarak ( inventory4 )", "Atiya Kaewruang( inventory5 )", "Naruemon Boonyuen( inventory6 )", "Sutthiwat Yennikorn( inventory7 )", "Suphannarat Rimjaeng( inventory8 )", "Phongphich Phiannanthawron( inventory9 )", "Sucheera Chitungmay( inventory10 )", "Atcharakhom Chantharabun( inventory11 )", "Narong Hongsaeng( inventory12 )", "Thanakrit Jeram( inventory13 )", "Boonumpar Maichum( inventory14 )", "Suwit Sangbuntan( inventory15 )"];
+
+/* ============================================================
+   CONFIG — edit before deploying
+   ============================================================ */
+const CONFIG = {
+  // Username -> {password, role, name}. Change these before deploying to staff.
+  // role 'admin' = full access (save/edit/delete/manage stores & items)
+  // role 'staff' = view & record audit status only, scoped to their store
+  users: {
+    'admin':  { password: 'adminho', role: 'admin', name: 'ผู้ดูแลระบบ' },
+    'st167':  { password: 'st167pass', role: 'staff', name: 'ทอม (ST.167)' },
+    'st156':  { password: 'st156pass', role: 'staff', name: 'AAA (ST.156)' },
+    'st160':  { password: 'st160pass', role: 'staff', name: 'เมย์ (ST.160)' },
+    'st165':  { password: 'st165pass', role: 'staff', name: 'มีน (ST.165)' },
+    'st171':  { password: 'st171pass', role: 'staff', name: 'BBB (ST.171)' },
+    'st166':  { password: 'st166pass', role: 'staff', name: 'CCC (ST.166)' },
+    'staff':  { password: 'staff1234', role: 'staff', name: 'เจ้าหน้าที่ตรวจสอบ' },
+    'inventory': { password: 'makroho', role: 'staff', name: 'ทีม Inventory' }
+  },
+  // Optional: Firebase Realtime Database sync.
+  // Fill these in with your Firebase project config (asia-southeast1 region recommended)
+  // to enable real-time multi-device sync. Leave apiKey as-is to run in local-only mode.
+  firebase: {
+    apiKey: "AIzaSyALCXiRUd0vxxLp_OLQTUE-erJn04ZwXZU",
+    authDomain: "hht-audit-inventory.firebaseapp.com",
+    databaseURL: "https://hht-audit-inventory-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hht-audit-inventory"
+  },
+  dbPath: 'hhtAudit'
+};
+
+/* ============================================================
+   ICONS
+   ============================================================ */
+const ICONS = {
+  dashboard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>',
+  store: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0"/><path d="M4 9v9a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/></path><path d="M9 21v-5h6v5"/></svg>',
+  ok: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  bad: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+  reset: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>',
+  settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 7.04 4.29l.06.06A1.65 1.65 0 0 0 8.92 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+  edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  transfer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
+};
+
+/* ============================================================
+   BUILD ITEM LIST (initial seed from RAW_DATA — used on first run only)
+   ============================================================ */
+function buildSeedItems(){
+  const items = [];
+  STORES.forEach(s => {
+    const d = RAW_DATA[s.id];
+    if(!d) return;
+    d.hht.forEach(h => items.push({
+      id: s.id + '-HHT-' + h.no, store: s.id, type: 'HHT', typeLabel: 'Handheld',
+      no: h.no, sn: h.sn, asset: h.asset, slot: ''
+    }));
+    d.battery.forEach(b => items.push({
+      id: s.id + '-BAT-' + b.no, store: s.id, type: 'BAT', typeLabel: 'Battery Charger',
+      no: b.no, sn: b.sn, asset: b.asset, slot: b.remark || ''
+    }));
+  });
+  return items;
+}
+let ITEMS = buildSeedItems();
+let ITEM_MAP = {};
+let STORE_MAP = {};
+function rebuildMaps(){
+  ITEM_MAP = {};
+  ITEMS.forEach(it => ITEM_MAP[it.id] = it);
+  STORE_MAP = {};
+  STORES.forEach(s => STORE_MAP[s.id] = s);
+}
+rebuildMaps();
+function genId(prefix){
+  return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let state = {
+  role: null,
+  userName: null,
+  username: null,
+  page: 'dashboard',
+  statuses: {}, // id -> {status:'ok'|'bad'|null, remark:'', by:'', at: ms}
+};
+let firebaseReady = false;
+let fbDb = null;
+
+/* ============================================================
+   PERSISTENCE
+   ============================================================ */
+const LS_KEY = 'hht_audit_statuses_v1';
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){ return {}; }
+}
+function saveLocal(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(state.statuses)); }catch(e){}
+}
+
+const CFG_LS_KEY = 'hht_audit_config_v1';
+function loadConfigLocal(){
+  try{
+    const raw = localStorage.getItem(CFG_LS_KEY);
+    if(!raw) return false;
+    const cfg = JSON.parse(raw);
+    if(cfg.stores) STORES = cfg.stores;
+    if(cfg.items) ITEMS = cfg.items;
+    if(cfg.caretakers) CARETAKERS = cfg.caretakers;
+    rebuildMaps();
+    return true;
+  }catch(e){ return false; }
+}
+function saveConfigLocal(){
+  try{ localStorage.setItem(CFG_LS_KEY, JSON.stringify({stores:STORES, items:ITEMS, caretakers:CARETAKERS})); }catch(e){}
+}
+function applyConfigChange(){
+  rebuildMaps();
+  saveConfigLocal();
+  pushConfig();
+  renderPage();
+}
+
+function initFirebase(){
+  if(CONFIG.firebase.apiKey === 'YOUR_API_KEY') return; // not configured
+  const s1 = document.createElement('script');
+  s1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+  s1.onload = () => {
+    const s2 = document.createElement('script');
+    s2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
+    s2.onload = () => {
+      try{
+        firebase.initializeApp(CONFIG.firebase);
+        fbDb = firebase.database();
+        firebaseReady = true;
+        setSyncStatus(true);
+        fbDb.ref(CONFIG.dbPath + '/statuses').on('value', snap => {
+          const val = snap.val() || {};
+          state.statuses = val;
+          saveLocal();
+          renderPage();
+          setUpdatedLabel();
+        });
+        fbDb.ref(CONFIG.dbPath + '/config').on('value', snap => {
+          const val = snap.val();
+          if(val){
+            if(val.stores) STORES = val.stores;
+            if(val.items) ITEMS = val.items;
+            if(val.caretakers) CARETAKERS = val.caretakers;
+            rebuildMaps();
+            saveConfigLocal();
+            renderPage();
+          }
+        });
+      }catch(e){ setSyncStatus(false); }
+    };
+    document.head.appendChild(s2);
+  };
+  s1.onerror = () => setSyncStatus(false);
+  document.head.appendChild(s1);
+}
+function pushStatus(id){
+  if(firebaseReady && fbDb){
+    fbDb.ref(CONFIG.dbPath + '/statuses/' + id).set(state.statuses[id]);
+  }
+}
+function pushStatusRemove(id){
+  if(firebaseReady && fbDb){
+    fbDb.ref(CONFIG.dbPath + '/statuses/' + id).remove();
+  }
+}
+function pushReset(){
+  if(firebaseReady && fbDb){
+    fbDb.ref(CONFIG.dbPath + '/statuses').set({});
+  }
+}
+function pushConfig(){
+  if(firebaseReady && fbDb){
+    fbDb.ref(CONFIG.dbPath + '/config').set({stores:STORES, items:ITEMS, caretakers:CARETAKERS});
+  }
+}
+function setSyncStatus(on){
+  const dot = document.getElementById('syncDot');
+  const label = document.getElementById('syncLabel');
+  if(on){ dot.className='sync-dot on'; label.textContent='ซิงค์: Firebase (เรียลไทม์)'; }
+  else { dot.className='sync-dot off'; label.textContent='ซิงค์: เครื่องนี้เท่านั้น'; }
+}
+function setUpdatedLabel(){
+  const el = document.getElementById('updatedLabel');
+  const now = new Date();
+  el.textContent = 'อัปเดตล่าสุด ' + now.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+}
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+function showLoginError(msg){
+  document.getElementById('loginError').textContent = msg;
+  const card = document.querySelector('.login-card');
+  card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+}
+function tryLogin(username, password){
+  const uname = (username || '').trim().toLowerCase();
+  const entry = CONFIG.users[uname];
+  if(entry && entry.password === password){
+    state.role = entry.role;
+    state.userName = entry.name;
+    state.username = uname;
+    sessionStorage.setItem('hht_audit_session', JSON.stringify({role:entry.role, name:entry.name, username:uname}));
+    document.getElementById('loginError').textContent = '';
+    startApp();
+  } else {
+    showLoginError('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง');
+  }
+}
+const loginForm = document.getElementById('loginForm');
+loginForm.addEventListener('submit', e=>{
+  e.preventDefault();
+  const u = document.getElementById('loginUser').value;
+  const p = document.getElementById('loginPass').value;
+  if(!u || !p){ showLoginError('กรุณากรอกชื่อผู้ใช้งานและรหัสผ่าน'); return; }
+  const btn = document.getElementById('loginSubmit');
+  btn.disabled = true;
+  setTimeout(()=>{ tryLogin(u, p); btn.disabled = false; }, 120);
+});
+document.getElementById('loginPassToggle').addEventListener('click', ()=>{
+  const inp = document.getElementById('loginPass');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+});
+
+/* ============================================================
+   APP START
+   ============================================================ */
+function startApp(){
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('roleAvatar').textContent = (state.role === 'admin') ? 'A' : 'S';
+  document.getElementById('roleLabel').textContent = state.userName;
+  buildSidebar();
+  renderPage();
+}
+
+function logout(){
+  sessionStorage.removeItem('hht_audit_session');
+  state.role = null; state.userName = null; state.username = null;
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('loginForm').reset();
+  document.getElementById('loginError').textContent = '';
+  setTimeout(()=>{ const u = document.getElementById('loginUser'); if(u) u.focus(); }, 50);
+}
+document.getElementById('logoutBtn').addEventListener('click', logout);
+
+/* ============================================================
+   THEME SYSTEM (presets, accent, custom background, display prefs)
+   ============================================================ */
+const THEME_PRESETS = [
+  { id:'midnight', name:'Midnight',  desc:'น้ำเงินเข้ม',   swatches:['#0a0e1a','#141b2e','#e0263f'] },
+  { id:'obsidian', name:'Obsidian',  desc:'ดำสนิท',        swatches:['#0d0d0e','#1a1a1c','#e0263f'] },
+  { id:'arctic',   name:'Arctic',    desc:'สว่าง โมเดิร์น', swatches:['#ffffff','#f5f1ec','#8b1538'] },
+  { id:'forest',   name:'Forest',    desc:'เขียวธรรมชาติ', swatches:['#0c1410','#16241c','#27b370'] },
+  { id:'royal',    name:'Royal',     desc:'ม่วงหรูหรา',     swatches:['#100b1c','#1d1433','#9468f0'] },
+  { id:'sunset',   name:'Sunset',    desc:'อบอุ่น พระอาทิตย์', swatches:['#180f0a','#2b1b12','#ff7d42'] },
+  { id:'ocean',    name:'Ocean',     desc:'ฟ้าเทอร์ควอยซ์', swatches:['#081016','#101f29','#33d4c6'] },
+  { id:'slate',    name:'Slate',     desc:'เทาเรียบหรู',    swatches:['#0e1116','#1a1f27','#4d87f5'] },
+];
+const ACCENT_PRESETS = ['#e0263f','#22b6e6','#27b370','#9468f0','#f0a72e','#ff5d8f'];
+
+const THEME_LS_KEY   = 'hht_audit_theme';
+const ACCENT_LS_KEY  = 'hht_audit_accent';
+const CUSTOMBG_LS_KEY= 'hht_audit_custom_bg';
+const ANIM_LS_KEY    = 'hht_audit_anim';
+const ROUNDED_LS_KEY = 'hht_audit_rounded';
+
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem(THEME_LS_KEY, t);
+  renderThemeGrid();
+}
+function applyAccent(hex){
+  if(hex){
+    document.documentElement.style.setProperty('--brand', hex);
+    document.documentElement.style.setProperty('--brand-strong', hex);
+    document.documentElement.style.setProperty('--brand-dim', hexToRgba(hex, .16));
+    localStorage.setItem(ACCENT_LS_KEY, hex);
+  } else {
+    document.documentElement.style.removeProperty('--brand');
+    document.documentElement.style.removeProperty('--brand-strong');
+    document.documentElement.style.removeProperty('--brand-dim');
+    localStorage.removeItem(ACCENT_LS_KEY);
+  }
+  renderAccentRow();
+}
+function applyCustomBg(hex){
+  if(hex){
+    applyTheme('custom');
+    document.documentElement.style.setProperty('--bg', hex);
+    document.documentElement.style.setProperty('--bg-soft', hex);
+    document.documentElement.style.setProperty('--surface', shadeColor(hex, 10));
+    document.documentElement.style.setProperty('--surface-2', shadeColor(hex, 18));
+    document.documentElement.style.setProperty('--surface-3', shadeColor(hex, 26));
+    localStorage.setItem(CUSTOMBG_LS_KEY, hex);
+    const inp = document.getElementById('customBgInput');
+    if(inp) inp.value = hex;
+  } else {
+    document.documentElement.style.removeProperty('--bg');
+    document.documentElement.style.removeProperty('--bg-soft');
+    document.documentElement.style.removeProperty('--surface');
+    document.documentElement.style.removeProperty('--surface-2');
+    document.documentElement.style.removeProperty('--surface-3');
+    localStorage.removeItem(CUSTOMBG_LS_KEY);
+  }
+}
+function hexToRgba(hex, a){
+  const h = hex.replace('#','');
+  const r = parseInt(h.substring(0,2),16), g = parseInt(h.substring(2,4),16), b = parseInt(h.substring(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function shadeColor(hex, percent){
+  const h = hex.replace('#','');
+  let r = parseInt(h.substring(0,2),16), g = parseInt(h.substring(2,4),16), b = parseInt(h.substring(4,6),16);
+  r = Math.min(255, Math.round(r + (255-r)*percent/100));
+  g = Math.min(255, Math.round(g + (255-g)*percent/100));
+  b = Math.min(255, Math.round(b + (255-b)*percent/100));
+  return '#' + [r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+function renderThemeGrid(){
+  const grid = document.getElementById('themeGrid');
+  if(!grid) return;
+  const cur = document.documentElement.getAttribute('data-theme') || 'arctic';
+  grid.innerHTML = THEME_PRESETS.map(t=>`
+    <div class="theme-card ${cur===t.id?'active':''}" data-theme-id="${t.id}">
+      ${cur===t.id?`<div class="theme-card__check">${ICONS.ok}</div>`:''}
+      <div class="theme-card__swatches">${t.swatches.map(c=>`<span style="background:${c}"></span>`).join('')}</div>
+      <p class="theme-card__name">${t.name}</p>
+      <p class="theme-card__desc">${t.desc}</p>
+    </div>`).join('');
+  grid.querySelectorAll('.theme-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      applyCustomBg(null); // clear any custom bg override when picking a preset
+      applyTheme(card.dataset.themeId);
+    });
+  });
+}
+function renderAccentRow(){
+  const row = document.getElementById('accentRow');
+  if(!row) return;
+  const cur = localStorage.getItem(ACCENT_LS_KEY);
+  row.innerHTML = ACCENT_PRESETS.map(c=>`
+    <div class="accent-swatch ${cur===c?'active':''}" data-accent="${c}" style="background:${c}">${ICONS.ok}</div>
+  `).join('');
+  row.querySelectorAll('.accent-swatch').forEach(sw=>{
+    sw.addEventListener('click', ()=> applyAccent(sw.dataset.accent));
+  });
+}
+function applyAnim(on){
+  document.body.classList.toggle('no-anim', !on);
+  localStorage.setItem(ANIM_LS_KEY, on ? '1' : '0');
+  const sw = document.getElementById('animSwitch');
+  if(sw) sw.classList.toggle('on', on);
+}
+function applyRounded(on){
+  document.body.classList.toggle('no-rounded', !on);
+  localStorage.setItem(ROUNDED_LS_KEY, on ? '1' : '0');
+  const sw = document.getElementById('roundedSwitch');
+  if(sw) sw.classList.toggle('on', on);
+}
+function initSettingsPanel(){
+  renderThemeGrid();
+  renderAccentRow();
+  const savedBg = localStorage.getItem(CUSTOMBG_LS_KEY);
+  const bgInput = document.getElementById('customBgInput');
+  if(savedBg && bgInput) bgInput.value = savedBg;
+  bgInput.addEventListener('input', ()=> applyCustomBg(bgInput.value));
+  document.getElementById('customBgReset').addEventListener('click', ()=>{
+    applyCustomBg(null);
+    applyTheme(localStorage.getItem(THEME_LS_KEY) === 'custom' ? 'arctic' : (localStorage.getItem(THEME_LS_KEY) || 'arctic'));
+  });
+  const animOn = localStorage.getItem(ANIM_LS_KEY) !== '0';
+  const roundedOn = localStorage.getItem(ROUNDED_LS_KEY) !== '0';
+  applyAnim(animOn);
+  applyRounded(roundedOn);
+  document.getElementById('animSwitch').addEventListener('click', ()=> applyAnim(!document.getElementById('animSwitch').classList.contains('on')));
+  document.getElementById('roundedSwitch').addEventListener('click', ()=> applyRounded(!document.getElementById('roundedSwitch').classList.contains('on')));
+}
+function openSettings(){ document.getElementById('settingsScreen').classList.remove('hidden'); renderThemeGrid(); renderAccentRow(); }
+function closeSettings(){ document.getElementById('settingsScreen').classList.add('hidden'); }
+document.getElementById('settingsBtn').addEventListener('click', openSettings);
+document.getElementById('settingsCloseBtn').addEventListener('click', closeSettings);
+document.getElementById('settingsScreen').addEventListener('click', e=>{ if(e.target.id === 'settingsScreen') closeSettings(); });
+
+document.getElementById('themeToggle').addEventListener('click', ()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = (cur === 'arctic' || cur === 'light') ? 'midnight' : 'arctic';
+  applyCustomBg(null);
+  applyTheme(next);
+});
+
+/* sidebar toggle (mobile) */
+const sidebarEl = document.getElementById('sidebar');
+const overlayEl = document.getElementById('overlay');
+function toggleSidebar(open){
+  sidebarEl.classList.toggle('open', open);
+  overlayEl.classList.toggle('show', open);
+}
+document.getElementById('hamburgerBtn').addEventListener('click', ()=>toggleSidebar(true));
+overlayEl.addEventListener('click', ()=>toggleSidebar(false));
+
+/* mobile search toggle */
+document.getElementById('searchToggle').addEventListener('click', ()=>{
+  document.getElementById('topbar').classList.toggle('search-active');
+  if(document.getElementById('topbar').classList.contains('search-active')){
+    document.getElementById('searchInput').focus();
+  }
+});
+function checkSearchToggleVisibility(){
+  document.getElementById('searchToggle').style.display = window.innerWidth <= 540 ? 'flex' : 'none';
+}
+window.addEventListener('resize', checkSearchToggleVisibility);
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+function computeCounts(storeId){
+  const items = ITEMS.filter(i => i.store === storeId);
+  let ok=0, bad=0, pending=0;
+  items.forEach(i=>{
+    const st = state.statuses[i.id];
+    if(st && st.status === 'ok') ok++;
+    else if(st && st.status === 'bad') bad++;
+    else pending++;
+  });
+  return {ok, bad, pending, total: items.length};
+}
+function computeTotals(){
+  let ok=0, bad=0, pending=0;
+  ITEMS.forEach(i=>{
+    const st = state.statuses[i.id];
+    if(st && st.status === 'ok') ok++;
+    else if(st && st.status === 'bad') bad++;
+    else pending++;
+  });
+  return {ok, bad, pending, total: ITEMS.length};
+}
+
+function buildSidebar(){
+  const nav = document.getElementById('sidebarNav');
+  let html = '';
+  html += navItem('dashboard', ICONS.dashboard, 'แดชบอร์ด', null, null);
+  html += '<div class="nav-label">สาขา (ST)</div>';
+  STORES.forEach(s=>{
+    const c = computeCounts(s.id);
+    const pct = c.total ? Math.round((c.ok+c.bad)/c.total*100) : 0;
+    html += navItem(s.id, ICONS.store, s.label, c.total, pct, c);
+  });
+  if(state.role === 'admin'){
+    html += '<div class="nav-label">ระบบ</div>';
+    html += navItem('admin', ICONS.settings, 'จัดการระบบ', null, null);
+  }
+  nav.innerHTML = html;
+  nav.querySelectorAll('.nav-item').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      state.page = el.dataset.page;
+      renderPage();
+      toggleSidebar(false);
+    });
+  });
+  highlightActiveNav();
+}
+function navItem(page, icon, label, count, pct, c){
+  let progress = '';
+  if(pct !== null){
+    progress = `<div class="nav-progress"><div style="width:${pct}%"></div></div>`;
+  }
+  return `<div class="nav-item" data-page="${page}">
+    <span class="nav-item__icon">${icon}</span>
+    <span class="nav-item__label">${label}${progress}</span>
+    ${count!==null ? `<span class="nav-item__count">${pct}%</span>` : ''}
+  </div>`;
+}
+function highlightActiveNav(){
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    el.classList.toggle('active', el.dataset.page === state.page);
+  });
+}
+
+/* ============================================================
+   ROUTER / PAGE RENDER
+   ============================================================ */
+function renderPage(){
+  highlightActiveNav();
+  buildSidebar(); // refresh counts
+  const content = document.getElementById('content');
+  if(state.page === 'dashboard'){
+    document.getElementById('topbarMain').textContent = 'แดชบอร์ด';
+    document.getElementById('topbarSub').textContent = 'ภาพรวมอุปกรณ์ HHT ทั้งหมด';
+    content.innerHTML = renderDashboard();
+    bindDashboardEvents();
+  } else if(state.page === 'admin' && state.role === 'admin'){
+    document.getElementById('topbarMain').textContent = 'จัดการระบบ';
+    document.getElementById('topbarSub').textContent = 'ผู้ดูแล / สาขา / รายการอุปกรณ์';
+    content.innerHTML = renderAdmin();
+    bindAdminEvents();
+  } else if(STORE_MAP[state.page]){
+    const s = STORE_MAP[state.page];
+    document.getElementById('topbarMain').textContent = s.label;
+    document.getElementById('topbarSub').textContent = 'ผู้ดูแล: ' + s.caretaker;
+    content.innerHTML = renderBranch(s.id);
+    bindBranchEvents(s.id);
+  } else {
+    // fallback if current page no longer exists (e.g. store was deleted)
+    state.page = 'dashboard';
+    renderPage();
+  }
+}
+
+/* ---------- DASHBOARD ---------- */
+function renderDashboard(){
+  const t = computeTotals();
+  const hhtTotal = ITEMS.filter(i=>i.type==='HHT').length;
+  const batTotal = ITEMS.filter(i=>i.type==='BAT').length;
+  const checked = t.ok + t.bad;
+  const pct = t.total ? Math.round(checked/t.total*100) : 0;
+
+  let html = `<div class="page">
+    <div class="page-head">
+      <div>
+        <h1>ภาพรวม HHT &amp; แท่นชาร์จ</h1>
+        <p>อุปกรณ์ทั้งหมด ${t.total} เครื่อง · Handheld ${hhtTotal} · แท่นชาร์จแบตเตอรี่ ${batTotal} · ${STORES.length} สาขา</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn--primary" id="exportBtn">${ICONS.download} ส่งออก Excel</button>
+        ${state.role==='admin' ? `<button class="btn btn--danger" id="resetBtn">${ICONS.reset} ล้างผลตรวจทั้งหมด</button>` : ''}
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card tone-accent">
+        <div class="kpi-card__label">อุปกรณ์ทั้งหมด</div>
+        <div class="kpi-card__value">${t.total}</div>
+        <div class="kpi-card__sub">เครื่อง / ${STORES.length} สาขา</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__label">ตรวจแล้ว</div>
+        <div class="kpi-card__value">${checked}<span> / ${t.total}</span></div>
+        <div class="kpi-card__sub">${pct}% ของทั้งหมด</div>
+      </div>
+      <div class="kpi-card tone-ok">
+        <div class="kpi-card__label">ปกติ</div>
+        <div class="kpi-card__value">${t.ok}</div>
+        <div class="kpi-card__sub">${t.total? Math.round(t.ok/t.total*100):0}% ของทั้งหมด</div>
+      </div>
+      <div class="kpi-card tone-bad">
+        <div class="kpi-card__label">เสีย / มีปัญหา</div>
+        <div class="kpi-card__value">${t.bad}</div>
+        <div class="kpi-card__sub">${t.total? Math.round(t.bad/t.total*100):0}% ของทั้งหมด</div>
+      </div>
+      <div class="kpi-card tone-pending">
+        <div class="kpi-card__label">ยังไม่ตรวจ</div>
+        <div class="kpi-card__value">${t.pending}</div>
+        <div class="kpi-card__sub">${t.total? Math.round(t.pending/t.total*100):0}% ของทั้งหมด</div>
+      </div>
+    </div>
+
+    <div class="section-title">สถานะแยกตามสาขา <span class="tag">${STORES.length} สาขา</span></div>
+    <div class="branch-grid">`;
+
+  STORES.forEach(s=>{
+    const c = computeCounts(s.id);
+    const okPct = c.total ? (c.ok/c.total*100) : 0;
+    const badPct = c.total ? (c.bad/c.total*100) : 0;
+    const pendPct = c.total ? (c.pending/c.total*100) : 0;
+    const donePct = c.total ? Math.round((c.ok+c.bad)/c.total*100) : 0;
+    html += `<div class="branch-card" data-store="${s.id}">
+      <div class="branch-card__top">
+        <div>
+          <div class="branch-card__name">${s.label}</div>
+          <div class="branch-card__caretaker">ผู้ดูแล: ${s.caretaker} · ${c.total} เครื่อง</div>
+        </div>
+        <div class="branch-card__pct">${donePct}%</div>
+      </div>
+      <div class="progress-bar">
+        <div class="pb-ok" style="width:${okPct}%"></div>
+        <div class="pb-bad" style="width:${badPct}%"></div>
+        <div class="pb-pending" style="width:${pendPct}%"></div>
+      </div>
+      <div class="branch-card__stats">
+        <span><span class="dot-legend" style="background:var(--ok)"></span>ปกติ <b>${c.ok}</b></span>
+        <span><span class="dot-legend" style="background:var(--bad)"></span>เสีย <b>${c.bad}</b></span>
+        <span><span class="dot-legend" style="background:var(--pending)"></span>รอตรวจ <b>${c.pending}</b></span>
+      </div>
+    </div>`;
+  });
+
+  html += `</div>`;
+
+  // broken items list
+  const brokenItems = ITEMS.filter(i => state.statuses[i.id] && state.statuses[i.id].status === 'bad');
+  html += `<div class="section-title">รายการที่ต้องดำเนินการ (เสีย) <span class="tag">${brokenItems.length} เครื่อง</span></div>`;
+  if(brokenItems.length === 0){
+    html += `<div class="empty-note">ยังไม่มีรายการที่ระบุว่าเสีย</div>`;
+  } else {
+    html += `<div class="issues-list">`;
+    brokenItems.forEach(i=>{
+      const st = state.statuses[i.id];
+      const remark = st.remark ? st.remark : 'ไม่มีหมายเหตุ';
+      html += `<div class="issue-row" data-jump="${i.id}">
+        <span class="issue-row__badge">${i.type}</span>
+        <div class="issue-row__main">
+          <div class="issue-row__sn">${i.sn} <span style="color:var(--text-faint);font-size:11px">· เลขทรัพย์สิน ${i.asset}</span></div>
+          <div class="issue-row__meta">${remark}</div>
+        </div>
+        <div class="issue-row__store">${STORE_MAP[i.store].label}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function bindDashboardEvents(){
+  document.querySelectorAll('.branch-card').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      state.page = el.dataset.store;
+      renderPage();
+    });
+  });
+  document.querySelectorAll('.issue-row').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const id = el.dataset.jump;
+      const item = ITEM_MAP[id];
+      state.page = item.store;
+      renderPage();
+      setTimeout(()=>{
+        const card = document.querySelector(`.dcard[data-id="${id}"]`);
+        if(card){ card.scrollIntoView({behavior:'smooth', block:'center'}); card.classList.add('flash'); setTimeout(()=>card.classList.remove('flash'), 700); }
+      }, 60);
+    });
+  });
+  const exportBtn = document.getElementById('exportBtn');
+  if(exportBtn) exportBtn.addEventListener('click', exportExcel);
+  const resetBtn = document.getElementById('resetBtn');
+  if(resetBtn) resetBtn.addEventListener('click', ()=>confirmModal(
+    'ล้างผลตรวจทั้งหมด?',
+    'การดำเนินการนี้จะลบสถานะ ปกติ/เสีย และหมายเหตุของอุปกรณ์ทุกเครื่องในทุกสาขา ไม่สามารถย้อนกลับได้',
+    ()=>{ state.statuses = {}; saveLocal(); pushReset(); renderPage(); showToast('ล้างผลตรวจทั้งหมดแล้ว'); }
+  ));
+}
+
+/* ---------- BRANCH PAGE ---------- */
+function renderBranch(storeId){
+  const s = STORE_MAP[storeId];
+  const c = computeCounts(storeId);
+  const items = ITEMS.filter(i=>i.store===storeId);
+  const hhtItems = items.filter(i=>i.type==='HHT');
+  const batItems = items.filter(i=>i.type==='BAT');
+
+  let html = `<div class="page">
+    <div class="branch-header">
+      <div class="branch-header__info">
+        <h2>${s.label}</h2>
+        <p>ผู้ดูแล: <b>${s.caretaker}</b> &nbsp;·&nbsp; อุปกรณ์ทั้งหมด <b>${c.total}</b> เครื่อง (Handheld ${hhtItems.length} / แท่นชาร์จ ${batItems.length})</p>
+      </div>
+      <div class="branch-header__stats">
+        <div class="bh-stat ok"><div class="bh-stat__value">${c.ok}</div><div class="bh-stat__label">ปกติ</div></div>
+        <div class="bh-stat bad"><div class="bh-stat__value">${c.bad}</div><div class="bh-stat__label">เสีย</div></div>
+        <div class="bh-stat pending"><div class="bh-stat__value">${c.pending}</div><div class="bh-stat__label">รอตรวจ</div></div>
+      </div>
+    </div>
+
+    <div class="filter-row">
+      <div class="chip active" data-filter="all">ทั้งหมด (${c.total})</div>
+      <div class="chip" data-filter="ok"><span class="chip-dot" style="background:var(--ok)"></span>ปกติ (${c.ok})</div>
+      <div class="chip" data-filter="bad"><span class="chip-dot" style="background:var(--bad)"></span>เสีย (${c.bad})</div>
+      <div class="chip" data-filter="pending"><span class="chip-dot" style="background:var(--pending)"></span>ยังไม่ตรวจ (${c.pending})</div>
+    </div>
+
+    <div class="group-title">Handheld (HHT) · ${hhtItems.length} เครื่อง</div>
+    <div class="dcard-grid" id="hhtGrid">${hhtItems.map(renderDeviceCard).join('')}</div>
+
+    <div class="group-title">แท่นชาร์จแบตเตอรี่ (Battery Charger) · ${batItems.length} เครื่อง</div>
+    <div class="dcard-grid" id="batGrid">${batItems.map(renderDeviceCard).join('')}</div>
+  </div>`;
+  return html;
+}
+
+function renderDeviceCard(item){
+  const st = state.statuses[item.id] || {};
+  const status = st.status || 'pending';
+  const remark = st.remark || '';
+  const meta = st.by ? `<div class="dcard__meta"><span>โดย ${escapeHtml(st.by)}</span><span>${formatTime(st.at)}</span></div>` : '';
+  return `<div class="dcard" data-status="${status}" data-id="${item.id}">
+    <div class="dcard__bar"></div>
+    <div class="dcard__body">
+      <div class="dcard__top">
+        <div class="dcard__tagrow">
+          <span class="dcard__type">${item.type}</span>
+          <span class="dcard__idx">#${String(item.no).padStart(3,'0')}</span>
+        </div>
+        <span class="dcard__led"></span>
+      </div>
+      <div class="dcard__field"><label>S/N</label><div class="val">${item.sn}</div></div>
+      <div class="dcard__field"><label>เลขทรัพย์สิน</label><div class="val">${item.asset}${item.slot ? ` <span class="dcard__slot">${item.slot}</span>`:''}</div></div>
+      <div class="dcard__actions">
+        <button class="seg seg--ok ${status==='ok'?'active':''}" data-set="ok">${ICONS.ok} ปกติ</button>
+        <button class="seg seg--bad ${status==='bad'?'active':''}" data-set="bad">${ICONS.bad} เสีย</button>
+      </div>
+      <textarea class="dcard__remark ${status==='bad'?'':'hidden'}" placeholder="หมายเหตุอาการเสีย เช่น เปิดไม่ติด, จอแตก">${escapeHtml(remark)}</textarea>
+      ${meta}
+    </div>
+  </div>`;
+}
+
+function bindBranchEvents(storeId){
+  // filter chips
+  document.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      const f = chip.dataset.filter;
+      document.querySelectorAll('.dcard').forEach(card=>{
+        const status = card.dataset.status;
+        let show = true;
+        if(f !== 'all') show = (status === f);
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+
+  document.querySelectorAll('.dcard').forEach(card=>{
+    const id = card.dataset.id;
+    card.querySelectorAll('.seg').forEach(seg=>{
+      seg.addEventListener('click', ()=>{
+        const setTo = seg.dataset.set;
+        const cur = state.statuses[id] || {};
+        const newStatus = cur.status === setTo ? null : setTo;
+        setItemStatus(id, newStatus, cur.remark || '');
+      });
+    });
+    const remark = card.querySelector('.dcard__remark');
+    remark.addEventListener('change', ()=>{
+      const cur = state.statuses[id] || {};
+      setItemStatus(id, cur.status || 'bad', remark.value);
+    });
+  });
+}
+
+function setItemStatus(id, status, remark){
+  if(status === null){
+    delete state.statuses[id];
+  } else {
+    state.statuses[id] = {
+      status: status,
+      remark: status === 'bad' ? remark : '',
+      by: state.userName,
+      at: Date.now()
+    };
+  }
+  saveLocal();
+  pushStatus(id);
+  setUpdatedLabel();
+
+  // local DOM update without full re-render for snappy feel
+  const card = document.querySelector(`.dcard[data-id="${id}"]`);
+  if(card){
+    card.dataset.status = status || 'pending';
+    card.querySelectorAll('.seg').forEach(s=>s.classList.toggle('active', s.dataset.set === status));
+    const ta = card.querySelector('.dcard__remark');
+    if(status === 'bad'){ ta.classList.remove('hidden'); ta.focus(); }
+    else { ta.classList.add('hidden'); ta.value=''; }
+    card.classList.add('flash');
+    setTimeout(()=>card.classList.remove('flash'), 500);
+    // update meta
+    let meta = card.querySelector('.dcard__meta');
+    if(state.statuses[id]){
+      const txt = `<span>โดย ${escapeHtml(state.userName)}</span><span>${formatTime(state.statuses[id].at)}</span>`;
+      if(!meta){ meta = document.createElement('div'); meta.className='dcard__meta'; card.querySelector('.dcard__body').appendChild(meta); }
+      meta.innerHTML = txt;
+    } else if(meta){ meta.remove(); }
+  }
+  // refresh sidebar counts + dashboard if showing
+  buildSidebar();
+  if(state.page === 'dashboard') renderPage();
+}
+
+/* ============================================================
+   ADMIN / SYSTEM MANAGEMENT PAGE
+   ============================================================ */
+function renderAdmin(){
+  const caretakerOptions = CARETAKERS.length
+    ? CARETAKERS.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('')
+    : `<option value="">ยังไม่มีรายชื่อผู้ดูแล</option>`;
+
+  const storeRows = STORES.length
+    ? STORES.map(s=>{
+        const count = ITEMS.filter(i=>i.store===s.id).length;
+        return `<tr data-store="${escapeHtml(s.id)}">
+          <td class="mono">${escapeHtml(s.id)}</td>
+          <td>${escapeHtml(s.label)}</td>
+          <td>${escapeHtml(s.caretaker)}</td>
+          <td class="mono">${count}</td>
+          <td>
+            <div class="icon-action-row">
+              <button class="icon-action" data-action="edit-store" data-id="${escapeHtml(s.id)}" title="แก้ไขสาขา">${ICONS.edit}</button>
+              <button class="icon-action danger" data-action="delete-store" data-id="${escapeHtml(s.id)}" title="ลบสาขา">${ICONS.trash}</button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('')
+    : `<tr><td colspan="5" class="admin-table-empty">ยังไม่มีสาขา</td></tr>`;
+
+  const storeOptions = STORES.map(s=>`<option value="${escapeHtml(s.id)}">${escapeHtml(s.label)}</option>`).join('');
+
+  return `<div class="page">
+    <div class="page-head">
+      <div>
+        <h1>จัดการระบบ</h1>
+        <p>เพิ่ม แก้ไข หรือลบ รายชื่อผู้ดูแล สาขา และรายการอุปกรณ์ — สำหรับผู้ดูแลระบบเท่านั้น</p>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card__head">
+        <h3>${ICONS.settings} รายชื่อผู้ดูแล <span class="tag">${CARETAKERS.length} คน</span></h3>
+        <div class="admin-add-row">
+          <input class="field-input" id="newCaretakerInput" placeholder="ชื่อผู้ดูแลใหม่...">
+          <button class="btn btn--primary" id="addCaretakerBtn">${ICONS.plus} เพิ่ม</button>
+        </div>
+      </div>
+      <div class="admin-card__desc">รายชื่อนี้ใช้เลือกผู้ดูแลของแต่ละสาขา เมื่อมีการส่งต่ออุปกรณ์ให้ผู้ดูแลคนใหม่ ให้เพิ่มชื่อที่นี่ก่อนแล้วไปกำหนดในตารางสาขาด้านล่าง</div>
+      <div class="admin-row-inline">
+        <select class="field-input" id="caretakerSelect">${caretakerOptions}</select>
+        <button class="icon-action danger" id="removeCaretakerBtn" title="ลบรายชื่อที่เลือก">${ICONS.trash}</button>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card__head">
+        <h3>${ICONS.store} สาขา (Branches) <span class="tag">${STORES.length} สาขา</span></h3>
+        <button class="btn btn--primary" id="addStoreBtn">${ICONS.plus} เพิ่มสาขา</button>
+      </div>
+      <div class="admin-card__desc">แก้ไขผู้ดูแลของสาขา หรือเพิ่มสาขาใหม่เมื่อมีการขยายพื้นที่ตรวจสอบ ลบได้เฉพาะสาขาที่ไม่มีอุปกรณ์เหลืออยู่</div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>รหัสสาขา</th><th>ชื่อที่แสดง</th><th>ผู้ดูแล</th><th>อุปกรณ์</th><th></th></tr></thead>
+          <tbody>${storeRows}</tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card__head">
+        <h3>${ICONS.dashboard} รายการอุปกรณ์ <span class="tag" id="adminItemsCount">${ITEMS.length} เครื่อง</span></h3>
+        <button class="btn btn--primary" id="addItemBtn">${ICONS.plus} เพิ่มอุปกรณ์</button>
+      </div>
+      <div class="admin-card__desc">เมื่ออุปกรณ์ถูกส่งต่อไปยังสาขาอื่น ให้กดแก้ไข แล้วเปลี่ยน "สาขา" ของอุปกรณ์นั้น สถานะ ปกติ/เสีย ที่ตรวจไว้จะยังคงอยู่</div>
+      <div class="admin-filter-row">
+        <select class="field-input" id="itemFilterStore">
+          <option value="">ทุกสาขา</option>
+          ${storeOptions}
+        </select>
+        <select class="field-input" id="itemFilterType">
+          <option value="">ทุกประเภท</option>
+          <option value="HHT">Handheld (HHT)</option>
+          <option value="BAT">แท่นชาร์จแบตเตอรี่</option>
+        </select>
+        <input class="field-input" id="itemSearchInput" placeholder="ค้นหา S/N หรือเลขทรัพย์สิน...">
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>สาขา</th><th>ประเภท</th><th>No.</th><th>S/N</th><th>เลขทรัพย์สิน</th><th>หมายเหตุ</th><th>สถานะ</th><th></th></tr></thead>
+          <tbody id="itemTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderItemRows(){
+  const fStore = document.getElementById('itemFilterStore').value;
+  const fType = document.getElementById('itemFilterType').value;
+  const q = document.getElementById('itemSearchInput').value.trim().toLowerCase();
+  let items = ITEMS;
+  if(fStore) items = items.filter(i=>i.store===fStore);
+  if(fType) items = items.filter(i=>i.type===fType);
+  if(q) items = items.filter(i=> i.sn.toLowerCase().includes(q) || String(i.asset).toLowerCase().includes(q));
+  items = items.slice().sort((a,b)=>{
+    if(a.store !== b.store) return a.store.localeCompare(b.store);
+    if(a.type !== b.type) return a.type.localeCompare(b.type);
+    return a.no - b.no;
+  });
+
+  const tbody = document.getElementById('itemTableBody');
+  if(items.length === 0){
+    tbody.innerHTML = `<tr><td colspan="8" class="admin-table-empty">ไม่พบรายการที่ตรงกับเงื่อนไข</td></tr>`;
+  } else {
+    tbody.innerHTML = items.map(i=>{
+      const st = state.statuses[i.id];
+      const statusHtml = st
+        ? (st.status==='ok' ? `<span class="status-pill ok">ปกติ</span>` : `<span class="status-pill bad">เสีย</span>`)
+        : `<span class="status-pill pending">รอตรวจ</span>`;
+      const storeLabel = STORE_MAP[i.store] ? STORE_MAP[i.store].label : i.store;
+      return `<tr data-id="${i.id}">
+        <td>${escapeHtml(storeLabel)}</td>
+        <td>${i.type === 'HHT' ? 'Handheld' : 'Battery'}</td>
+        <td class="mono">#${String(i.no).padStart(3,'0')}</td>
+        <td class="mono">${escapeHtml(i.sn)}</td>
+        <td class="mono">${escapeHtml(String(i.asset))}</td>
+        <td>${escapeHtml(i.slot || '-')}</td>
+        <td>${statusHtml}</td>
+        <td>
+          <div class="icon-action-row">
+            <button class="icon-action" data-action="edit-item" data-id="${i.id}" title="แก้ไข">${ICONS.edit}</button>
+            <button class="icon-action danger" data-action="delete-item" data-id="${i.id}" title="ลบ">${ICONS.trash}</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+  const countTag = document.getElementById('adminItemsCount');
+  if(countTag) countTag.textContent = ITEMS.length + ' เครื่อง';
+  bindItemRowActions();
+}
+function bindItemRowActions(){
+  document.querySelectorAll('[data-action="edit-item"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>openItemFormModal(btn.dataset.id));
+  });
+  document.querySelectorAll('[data-action="delete-item"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>deleteItem(btn.dataset.id));
+  });
+}
+function refreshAdminItems(){
+  rebuildMaps();
+  saveConfigLocal();
+  pushConfig();
+  buildSidebar();
+  renderItemRows();
+}
+
+function bindAdminEvents(){
+  // --- Caretakers ---
+  const addCaretakerBtn = document.getElementById('addCaretakerBtn');
+  const newCaretakerInput = document.getElementById('newCaretakerInput');
+  addCaretakerBtn.addEventListener('click', ()=>{
+    const name = newCaretakerInput.value.trim();
+    if(!name) return;
+    if(CARETAKERS.includes(name)){ showToast('มีรายชื่อนี้อยู่แล้ว', true); return; }
+    CARETAKERS.push(name);
+    newCaretakerInput.value = '';
+    applyConfigChange();
+    showToast(`เพิ่มผู้ดูแล "${name}" แล้ว`);
+  });
+  newCaretakerInput.addEventListener('keydown', e=>{
+    if(e.key === 'Enter'){ e.preventDefault(); addCaretakerBtn.click(); }
+  });
+  const removeCaretakerBtn = document.getElementById('removeCaretakerBtn');
+  removeCaretakerBtn.addEventListener('click', ()=>{
+    const sel = document.getElementById('caretakerSelect');
+    const name = sel.value;
+    if(!name) return;
+    if(STORES.some(s=>s.caretaker===name)){
+      showToast(`ไม่สามารถลบ "${name}" ได้ เนื่องจากยังเป็นผู้ดูแลของบางสาขา กรุณาเปลี่ยนผู้ดูแลสาขานั้นก่อน`, true);
+      return;
+    }
+    confirmModal('ลบรายชื่อผู้ดูแล?', `ต้องการลบ "${name}" ออกจากรายชื่อผู้ดูแลหรือไม่`, ()=>{
+      CARETAKERS = CARETAKERS.filter(c=>c!==name);
+      applyConfigChange();
+      showToast('ลบรายชื่อผู้ดูแลแล้ว');
+    });
+  });
+
+  // --- Stores ---
+  document.getElementById('addStoreBtn').addEventListener('click', openAddStoreModal);
+  document.querySelectorAll('[data-action="edit-store"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>openEditStoreModal(btn.dataset.id));
+  });
+  document.querySelectorAll('[data-action="delete-store"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>deleteStore(btn.dataset.id));
+  });
+
+  // --- Items ---
+  document.getElementById('addItemBtn').addEventListener('click', ()=>openItemFormModal());
+  ['itemFilterStore','itemFilterType','itemSearchInput'].forEach(id=>{
+    document.getElementById(id).addEventListener('input', renderItemRows);
+  });
+  renderItemRows();
+}
+
+/* ---------- Caretaker datalist helper ---------- */
+function caretakerOptionsHtml(){
+  return CARETAKERS.map(c=>`<option value="${escapeHtml(c)}">`).join('');
+}
+
+/* ---------- Store CRUD ---------- */
+function openAddStoreModal(){
+  formModal('เพิ่มสาขาใหม่', `
+    <div class="form-grid">
+      <div class="form-field"><label>รหัสสาขา (เช่น ST180)</label><input class="field-input" name="id" placeholder="ST180" required></div>
+      <div class="form-field"><label>ชื่อที่แสดง</label><input class="field-input" name="label" placeholder="ST.180"></div>
+      <div class="form-field form-field--full"><label>ผู้ดูแล</label>
+        <input class="field-input" name="caretaker" list="caretakerDatalist" placeholder="เลือกหรือพิมพ์ชื่อใหม่">
+        <datalist id="caretakerDatalist">${caretakerOptionsHtml()}</datalist>
+      </div>
+    </div>
+  `, (data)=>{
+    const id = data.id.trim().toUpperCase().replace(/\s+/g,'');
+    if(!id){ showToast('กรุณากรอกรหัสสาขา', true); return false; }
+    if(STORE_MAP[id]){ showToast('รหัสสาขานี้มีอยู่แล้ว', true); return false; }
+    const m = id.match(/^ST\.?(\d+)$/);
+    const label = data.label.trim() || (m ? 'ST.' + m[1] : id);
+    const caretaker = data.caretaker.trim() || '-';
+    STORES.push({id, label, caretaker});
+    if(caretaker !== '-' && !CARETAKERS.includes(caretaker)) CARETAKERS.push(caretaker);
+    applyConfigChange();
+    showToast(`เพิ่มสาขา ${label} แล้ว`);
+  }, {submitLabel:'เพิ่มสาขา'});
+}
+function openEditStoreModal(storeId){
+  const s = STORE_MAP[storeId];
+  if(!s) return;
+  formModal(`แก้ไขสาขา ${s.label}`, `
+    <div class="form-field"><label>รหัสสาขา</label><input class="field-input" name="id" value="${escapeHtml(s.id)}" required></div>
+    <div class="form-field"><label>ชื่อที่แสดง</label><input class="field-input" name="label" value="${escapeHtml(s.label)}" required></div>
+    <div class="form-field"><label>ผู้ดูแล</label>
+      <input class="field-input" name="caretaker" list="caretakerDatalist" value="${escapeHtml(s.caretaker)}">
+      <datalist id="caretakerDatalist">${caretakerOptionsHtml()}</datalist>
+    </div>
+    <div class="form-hint">${ICONS.transfer} หากเปลี่ยน "รหัสสาขา" อุปกรณ์ทั้งหมดของสาขานี้จะถูกย้ายไปใช้รหัสใหม่โดยอัตโนมัติ</div>
+  `, (data)=>{
+    const newId = data.id.trim().toUpperCase().replace(/\s+/g,'');
+    const label = data.label.trim();
+    if(!newId){ showToast('กรุณากรอกรหัสสาขา', true); return false; }
+    if(!label){ showToast('กรุณากรอกชื่อสาขา', true); return false; }
+    if(newId !== s.id && STORE_MAP[newId]){ showToast('รหัสสาขานี้มีอยู่แล้ว', true); return false; }
+    const caretaker = data.caretaker.trim() || s.caretaker;
+    const oldId = s.id;
+    if(newId !== oldId){
+      ITEMS.forEach(i=>{ if(i.store === oldId) i.store = newId; });
+      if(state.page === oldId) state.page = newId;
+      s.id = newId;
+    }
+    s.label = label;
+    s.caretaker = caretaker;
+    if(!CARETAKERS.includes(caretaker)) CARETAKERS.push(caretaker);
+    applyConfigChange();
+    showToast(newId !== oldId ? `เปลี่ยนรหัสสาขาเป็น ${newId} แล้ว` : 'บันทึกการแก้ไขสาขาแล้ว');
+  }, {submitLabel:'บันทึก'});
+}
+function deleteStore(storeId){
+  const s = STORE_MAP[storeId];
+  if(!s) return;
+  const count = ITEMS.filter(i=>i.store===storeId).length;
+  if(count > 0){
+    showToast(`ไม่สามารถลบสาขา ${s.label} ได้ เนื่องจากยังมีอุปกรณ์อยู่ ${count} เครื่อง กรุณาย้ายหรือลบอุปกรณ์ก่อน`, true);
+    return;
+  }
+  confirmModal('ลบสาขา?', `ต้องการลบสาขา ${s.label} หรือไม่ การดำเนินการนี้ไม่สามารถย้อนกลับได้`, ()=>{
+    STORES = STORES.filter(x=>x.id!==storeId);
+    if(state.page === storeId) state.page = 'dashboard';
+    applyConfigChange();
+    showToast('ลบสาขาแล้ว');
+  });
+}
+
+/* ---------- Item CRUD (add / edit / transfer / delete) ---------- */
+function openItemFormModal(itemId){
+  const editing = !!itemId;
+  const item = editing ? ITEM_MAP[itemId] : null;
+  const storeOptions = STORES.map(s=>`<option value="${escapeHtml(s.id)}" ${item && item.store===s.id ? 'selected':''}>${escapeHtml(s.label)}</option>`).join('');
+  formModal(editing ? `แก้ไขอุปกรณ์ S/N ${item.sn}` : 'เพิ่มอุปกรณ์ใหม่', `
+    <div class="form-grid">
+      <div class="form-field"><label>สาขา</label><select class="field-input" name="store">${storeOptions}</select></div>
+      <div class="form-field"><label>ประเภท</label>
+        <select class="field-input" name="type">
+          <option value="HHT" ${item && item.type==='HHT'?'selected':''}>Handheld (HHT)</option>
+          <option value="BAT" ${item && item.type==='BAT'?'selected':''}>แท่นชาร์จแบตเตอรี่</option>
+        </select>
+      </div>
+      <div class="form-field"><label>No.</label><input class="field-input" name="no" type="number" min="1" value="${item ? item.no : ''}" required></div>
+      <div class="form-field"><label>S/N</label><input class="field-input" name="sn" value="${item ? escapeHtml(item.sn) : ''}" required></div>
+      <div class="form-field"><label>เลขทรัพย์สิน</label><input class="field-input" name="asset" value="${item ? escapeHtml(String(item.asset)) : ''}" required></div>
+      <div class="form-field"><label>หมายเหตุ / ช่องชาร์จ</label><input class="field-input" name="slot" value="${item ? escapeHtml(item.slot || '') : ''}" placeholder="ไม่บังคับ"></div>
+    </div>
+    ${editing ? `<div class="form-hint">${ICONS.transfer} เปลี่ยน "สาขา" เพื่อบันทึกการส่งต่ออุปกรณ์ไปยังสาขาอื่น สถานะ ปกติ/เสีย ที่ตรวจไว้จะยังคงติดไปกับอุปกรณ์นี้</div>` : ''}
+  `, (data)=>{
+    const storeId = data.store;
+    if(!STORE_MAP[storeId]){ showToast('ไม่พบสาขาที่เลือก', true); return false; }
+    const no = parseInt(data.no, 10);
+    if(!no || no < 1){ showToast('กรุณากรอกหมายเลข (No.) ที่ถูกต้อง', true); return false; }
+    if(!data.sn){ showToast('กรุณากรอก S/N', true); return false; }
+    if(!data.asset){ showToast('กรุณากรอกเลขทรัพย์สิน', true); return false; }
+    const typeLabel = data.type === 'HHT' ? 'Handheld' : 'Battery Charger';
+    if(editing){
+      const movedStore = item.store !== storeId;
+      item.store = storeId;
+      item.type = data.type;
+      item.typeLabel = typeLabel;
+      item.no = no;
+      item.sn = data.sn;
+      item.asset = data.asset;
+      item.slot = data.slot || '';
+      refreshAdminItems();
+      showToast(movedStore ? `ย้ายอุปกรณ์ไปยัง ${STORE_MAP[storeId].label} แล้ว` : 'บันทึกการแก้ไขแล้ว');
+    } else {
+      ITEMS.push({
+        id: genId('item'), store: storeId, type: data.type, typeLabel,
+        no, sn: data.sn, asset: data.asset, slot: data.slot || ''
+      });
+      refreshAdminItems();
+      showToast('เพิ่มอุปกรณ์ใหม่แล้ว');
+    }
+  }, {
+    submitLabel: editing ? 'บันทึก' : 'เพิ่มอุปกรณ์',
+    onMount: (form)=>{
+      if(editing) return;
+      const storeSel = form.querySelector('[name="store"]');
+      const typeSel = form.querySelector('[name="type"]');
+      const noInput = form.querySelector('[name="no"]');
+      function suggestNo(){
+        const existing = ITEMS.filter(i=>i.store===storeSel.value && i.type===typeSel.value);
+        const maxNo = existing.reduce((m,i)=>Math.max(m,i.no),0);
+        noInput.value = maxNo+1;
+      }
+      storeSel.addEventListener('change', suggestNo);
+      typeSel.addEventListener('change', suggestNo);
+      suggestNo();
+    }
+  });
+}
+function deleteItem(itemId){
+  const item = ITEM_MAP[itemId];
+  if(!item) return;
+  confirmModal('ลบอุปกรณ์?', `ต้องการลบอุปกรณ์ S/N ${item.sn} (เลขทรัพย์สิน ${item.asset}) จาก ${STORE_MAP[item.store].label} หรือไม่ การดำเนินการนี้ไม่สามารถย้อนกลับได้`, ()=>{
+    ITEMS = ITEMS.filter(i=>i.id!==itemId);
+    if(state.statuses[itemId]){
+      delete state.statuses[itemId];
+      saveLocal();
+      pushStatusRemove(itemId);
+    }
+    refreshAdminItems();
+    showToast('ลบอุปกรณ์แล้ว');
+  });
+}
+
+/* ---------- Generic form modal ---------- */
+function formModal(title, fieldsHtml, onSubmit, opts){
+  opts = opts || {};
+  const backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop';
+  backdrop.innerHTML = `<div class="modal modal--form">
+    <h3>${escapeHtml(title)}</h3>
+    <form id="dynForm">
+      ${fieldsHtml}
+      <div class="btn-row" style="margin-top:6px">
+        <button type="button" class="btn" id="formCancel">ยกเลิก</button>
+        <button type="submit" class="btn btn--primary">${escapeHtml(opts.submitLabel || 'บันทึก')}</button>
+      </div>
+    </form>
+  </div>`;
+  document.body.appendChild(backdrop);
+  const form = backdrop.querySelector('#dynForm');
+  backdrop.querySelector('#formCancel').addEventListener('click', ()=>backdrop.remove());
+  backdrop.addEventListener('click', e=>{ if(e.target===backdrop) backdrop.remove(); });
+  form.addEventListener('submit', e=>{
+    e.preventDefault();
+    const data = {};
+    form.querySelectorAll('[name]').forEach(el=>{ data[el.name] = el.value; });
+    const result = onSubmit(data, backdrop);
+    if(result !== false) backdrop.remove();
+  });
+  if(opts.onMount) opts.onMount(form, backdrop);
+  const firstInput = form.querySelector('.field-input:not([disabled])');
+  if(firstInput) setTimeout(()=>firstInput.focus(), 50);
+  return backdrop;
+}
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+searchInput.addEventListener('input', ()=>{
+  const q = searchInput.value.trim().toLowerCase();
+  if(!q){ searchResults.classList.add('hidden'); searchResults.innerHTML=''; return; }
+  const matches = ITEMS.filter(i => i.sn.toLowerCase().includes(q) || String(i.asset).toLowerCase().includes(q)).slice(0,8);
+  if(matches.length === 0){
+    searchResults.innerHTML = `<div class="search-empty">ไม่พบรายการที่ตรงกับ "${escapeHtml(searchInput.value)}"</div>`;
+  } else {
+    searchResults.innerHTML = matches.map(i=>{
+      const st = state.statuses[i.id];
+      const statusLabel = st ? (st.status==='ok'?'ปกติ':'เสีย') : 'ยังไม่ตรวจ';
+      const statusColor = st ? (st.status==='ok'?'var(--ok)':'var(--bad)') : 'var(--pending)';
+      return `<div class="sr-item" data-jump="${i.id}">
+        <div class="sr-item__top"><span>${STORE_MAP[i.store].label} · ${i.type} #${i.no}</span><span style="color:${statusColor}">${statusLabel}</span></div>
+        <div class="sr-item__sn">${i.sn} <span style="color:var(--text-faint);font-size:11px">เลขทรัพย์สิน ${i.asset}</span></div>
+      </div>`;
+    }).join('');
+  }
+  searchResults.classList.remove('hidden');
+});
+searchResults.addEventListener('click', e=>{
+  const el = e.target.closest('.sr-item');
+  if(!el) return;
+  const id = el.dataset.jump;
+  const item = ITEM_MAP[id];
+  state.page = item.store;
+  renderPage();
+  searchInput.value=''; searchResults.classList.add('hidden');
+  document.getElementById('topbar').classList.remove('search-active');
+  setTimeout(()=>{
+    const card = document.querySelector(`.dcard[data-id="${id}"]`);
+    if(card){ card.scrollIntoView({behavior:'smooth', block:'center'}); card.classList.add('flash'); setTimeout(()=>card.classList.remove('flash'),700); }
+  }, 60);
+});
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.search-wrap')) searchResults.classList.add('hidden');
+});
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function formatTime(ms){
+  if(!ms) return '';
+  const d = new Date(ms);
+  return d.toLocaleDateString('th-TH',{day:'2-digit',month:'2-digit',year:'2-digit'}) + ' ' + d.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+}
+let toastTimer;
+function showToast(msg, isError){
+  const t = document.getElementById('toast');
+  t.innerHTML = (isError ? ICONS.bad : ICONS.check) + '<span>' + escapeHtml(msg) + '</span>';
+  t.classList.toggle('toast--error', !!isError);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+function confirmModal(title, body, onConfirm){
+  const backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop';
+  backdrop.innerHTML = `<div class="modal">
+    <h3>${escapeHtml(title)}</h3>
+    <p>${escapeHtml(body)}</p>
+    <div class="btn-row">
+      <button class="btn" id="modalCancel">ยกเลิก</button>
+      <button class="btn btn--danger" id="modalConfirm">ยืนยัน</button>
+    </div>
+  </div>`;
+  document.body.appendChild(backdrop);
+  backdrop.querySelector('#modalCancel').addEventListener('click', ()=>backdrop.remove());
+  backdrop.addEventListener('click', e=>{ if(e.target===backdrop) backdrop.remove(); });
+  backdrop.querySelector('#modalConfirm').addEventListener('click', ()=>{ onConfirm(); backdrop.remove(); });
+}
+
+/* ============================================================
+   EXPORT TO EXCEL
+   ============================================================ */
+function exportExcel(){
+  if (typeof XLSX === 'undefined'){
+    showToast('ไม่สามารถส่งออก Excel ได้ (ต้องเชื่อมต่ออินเทอร์เน็ตเพื่อโหลดไลบรารี)', true);
+    return;
+  }
+  const rows = [];
+  STORES.forEach(s=>{
+    ITEMS.filter(i=>i.store===s.id).forEach(i=>{
+      const st = state.statuses[i.id] || {};
+      rows.push({
+        'สาขา': s.label,
+        'ผู้ดูแล': s.caretaker,
+        'ประเภท': i.type === 'HHT' ? 'Handheld' : 'Battery Charger',
+        'No.': i.no,
+        'S/N': i.sn,
+        'เลขทรัพย์สิน': i.asset,
+        'ประเภทช่องชาร์จ': i.slot || '',
+        'สถานะ': st.status === 'ok' ? 'ปกติ' : st.status === 'bad' ? 'เสีย' : 'ยังไม่ตรวจ',
+        'หมายเหตุ': st.remark || '',
+        'ตรวจโดย': st.by || '',
+        'วันที่ตรวจ': st.at ? formatTime(st.at) : ''
+      });
+    });
+  });
+
+  const summaryRows = STORES.map(s=>{
+    const c = computeCounts(s.id);
+    return {
+      'สาขา': s.label, 'ผู้ดูแล': s.caretaker, 'ทั้งหมด': c.total,
+      'ปกติ': c.ok, 'เสีย': c.bad, 'ยังไม่ตรวจ': c.pending,
+      '% ตรวจแล้ว': c.total ? Math.round((c.ok+c.bad)/c.total*100)+'%' : '0%'
+    };
+  });
+  const t = computeTotals();
+  summaryRows.push({'สาขา':'TOTAL','ผู้ดูแล':'','ทั้งหมด':t.total,'ปกติ':t.ok,'เสีย':t.bad,'ยังไม่ตรวจ':t.pending,'% ตรวจแล้ว': t.total? Math.round((t.ok+t.bad)/t.total*100)+'%':'0%'});
+
+  const wb = XLSX.utils.book_new();
+  const wsSummary = XLSX.utils.json_to_sheet(summaryRows);
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+  const wsAll = XLSX.utils.json_to_sheet(rows);
+  XLSX.utils.book_append_sheet(wb, wsAll, 'All Items');
+
+  const now = new Date();
+  const fname = `HHT_Audit_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.xlsx`;
+  XLSX.writeFile(wb, fname);
+  showToast('ส่งออกไฟล์ Excel แล้ว');
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(function init(){
+  // theme
+  const savedTheme = localStorage.getItem(THEME_LS_KEY);
+  if(savedTheme) applyTheme(savedTheme);
+  const savedAccent = localStorage.getItem(ACCENT_LS_KEY);
+  if(savedAccent) applyAccent(savedAccent);
+  const savedCustomBg = localStorage.getItem(CUSTOMBG_LS_KEY);
+  if(savedCustomBg) applyCustomBg(savedCustomBg);
+  initSettingsPanel();
+  checkSearchToggleVisibility();
+
+  const yearEl = document.getElementById('loginYear');
+  if(yearEl) yearEl.textContent = new Date().getFullYear() + 543; // พ.ศ.
+
+  // local data
+  state.statuses = loadLocal();
+  loadConfigLocal();
+
+  // firebase
+  setSyncStatus(false);
+  initFirebase();
+
+  // restore session
+  try{
+    const sess = JSON.parse(sessionStorage.getItem('hht_audit_session'));
+    if(sess && sess.role){
+      state.role = sess.role; state.userName = sess.name; state.username = sess.username || null;
+      startApp();
+    } else {
+      setTimeout(()=>{ const u = document.getElementById('loginUser'); if(u) u.focus(); }, 100);
+    }
+  }catch(e){
+    setTimeout(()=>{ const u = document.getElementById('loginUser'); if(u) u.focus(); }, 100);
+  }
+})();
+</script>
+
+
+<!-- SheetJS for Excel export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</body>
+</html>
