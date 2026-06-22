@@ -1023,7 +1023,7 @@ const CONFIG = {
     'st171':  { password: 'st171pass', role: 'staff', name: 'BBB (ST.171)' },
     'st166':  { password: 'st166pass', role: 'staff', name: 'CCC (ST.166)' },
     'staff':  { password: 'staff1234', role: 'staff', name: 'เจ้าหน้าที่ตรวจสอบ' },
-    'inventory': { password: 'makroho', role: 'staff', name: 'ทีม Inventory' }
+    'inventory': { password: 'makroho', role: 'editor', name: 'ทีม Inventory' }
   },
   // Optional: Firebase Realtime Database sync.
   // Fill these in with your Firebase project config (asia-southeast1 region recommended)
@@ -1251,7 +1251,7 @@ document.getElementById('loginPassToggle').addEventListener('click', ()=>{
 function startApp(){
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
-  document.getElementById('roleAvatar').textContent = (state.role === 'admin') ? 'A' : 'S';
+  document.getElementById('roleAvatar').textContent = (state.role === 'admin') ? 'A' : (state.role === 'editor') ? 'E' : 'S';
   document.getElementById('roleLabel').textContent = state.userName;
   buildSidebar();
   renderPage();
@@ -1470,7 +1470,7 @@ function buildSidebar(){
     const pct = c.total ? Math.round((c.ok+c.bad)/c.total*100) : 0;
     html += navItem(s.id, ICONS.store, s.label, c.total, pct, c);
   });
-  if(state.role === 'admin'){
+  if(state.role === 'admin' || state.role === 'editor'){
     html += '<div class="nav-label">ระบบ</div>';
     html += navItem('admin', ICONS.settings, 'จัดการระบบ', null, null);
   }
@@ -1513,7 +1513,7 @@ function renderPage(){
     document.getElementById('topbarSub').textContent = 'ภาพรวมอุปกรณ์ HHT ทั้งหมด';
     content.innerHTML = renderDashboard();
     bindDashboardEvents();
-  } else if(state.page === 'admin' && state.role === 'admin'){
+  } else if(state.page === 'admin' && (state.role === 'admin' || state.role === 'editor')){
     document.getElementById('topbarMain').textContent = 'จัดการระบบ';
     document.getElementById('topbarSub').textContent = 'ผู้ดูแล / สาขา / รายการอุปกรณ์';
     content.innerHTML = renderAdmin();
@@ -1821,7 +1821,7 @@ function renderAdmin(){
           <td>
             <div class="icon-action-row">
               <button class="icon-action" data-action="edit-store" data-id="${escapeHtml(s.id)}" title="แก้ไขสาขา">${ICONS.edit}</button>
-              <button class="icon-action danger" data-action="delete-store" data-id="${escapeHtml(s.id)}" title="ลบสาขา">${ICONS.trash}</button>
+              ${state.role === 'admin' ? `<button class="icon-action danger" data-action="delete-store" data-id="${escapeHtml(s.id)}" title="ลบสาขา">${ICONS.trash}</button>` : ''}
             </div>
           </td>
         </tr>`;
@@ -1849,7 +1849,7 @@ function renderAdmin(){
       <div class="admin-card__desc">รายชื่อนี้ใช้เลือกผู้ดูแลของแต่ละสาขา เมื่อมีการส่งต่ออุปกรณ์ให้ผู้ดูแลคนใหม่ ให้เพิ่มชื่อที่นี่ก่อนแล้วไปกำหนดในตารางสาขาด้านล่าง</div>
       <div class="admin-row-inline">
         <select class="field-input" id="caretakerSelect">${caretakerOptions}</select>
-        <button class="icon-action danger" id="removeCaretakerBtn" title="ลบรายชื่อที่เลือก">${ICONS.trash}</button>
+        ${state.role === 'admin' ? `<button class="icon-action danger" id="removeCaretakerBtn" title="ลบรายชื่อที่เลือก">${ICONS.trash}</button>` : ''}
       </div>
     </div>
 
@@ -1930,7 +1930,7 @@ function renderItemRows(){
         <td>
           <div class="icon-action-row">
             <button class="icon-action" data-action="edit-item" data-id="${i.id}" title="แก้ไข">${ICONS.edit}</button>
-            <button class="icon-action danger" data-action="delete-item" data-id="${i.id}" title="ลบ">${ICONS.trash}</button>
+            ${state.role === 'admin' ? `<button class="icon-action danger" data-action="delete-item" data-id="${i.id}" title="ลบ">${ICONS.trash}</button>` : ''}
           </div>
         </td>
       </tr>`;
@@ -1973,7 +1973,7 @@ function bindAdminEvents(){
     if(e.key === 'Enter'){ e.preventDefault(); addCaretakerBtn.click(); }
   });
   const removeCaretakerBtn = document.getElementById('removeCaretakerBtn');
-  removeCaretakerBtn.addEventListener('click', ()=>{
+  if(removeCaretakerBtn) removeCaretakerBtn.addEventListener('click', ()=>{
     const sel = document.getElementById('caretakerSelect');
     const name = sel.value;
     if(!name) return;
